@@ -48,7 +48,11 @@ app.post('/postBlogNow', function(req, res){
 		res.send(400);
 		return;
 	}
-	//we need to make sure user is logged in before make a post
+	//must be logged in
+	if ( req.user == null ) {
+		res.send(400);
+		return;
+	}
 	Blog.blogPost(title, subTitle, tags, body, req.user); //go to blogPost in models
 	res.send(200);
 });
