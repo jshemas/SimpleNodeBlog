@@ -1,0 +1,21 @@
+<% layout('layout') -%>
+
+<% if (!user) { %>
+	<h2>Welcome! Please log in.</h2>
+<% } else { %>
+	<h2>Hello, <%= user.displayName %>.</h2>
+<% } %>
+
+
+<% if (!blog) { %>
+	<h2>blog not found</h2>
+<% } else { %>
+	<% for(var i = 0; i < blog.length; i++) { %>
+		<% var blogPost = blog[i] %>
+		<h1>Title: <%= blogPost.title %></h1>
+		<h2>SubTitle: <%= blogPost.subTitle %></h2>
+		<p>Body: <%= blogPost.body %></p>
+		<p>Author: <%= blogPost.author %></p>
+		<p>Tags: <%= blogPost.tags %></p>
+	<% } %>
+<% } %>

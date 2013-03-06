@@ -1,0 +1,19 @@
+{
+	"name": "Simple-Node-Blog",
+	"description": "A simple blog wrote in NodeJS.",
+	"version": "0.1.0",
+	"private": true,
+	"author": {
+		"name": "Josh Shemas",
+		"email": "jshemas@hotmail.com"
+	},
+	"dependencies": {
+		"express": "3.0.6",
+		"ejs": "0.8.3",
+		"ejs-locals": "1.0.2",
+		"mongoose": "3.5.7",
+		"connect": "2.7.3",
+		"passport": "0.1.16",
+		"passport-facebook": "0.1.5"
+	}
+}

@@ -1,0 +1,47 @@
+<% layout('layout') -%>
+
+<form action="Send" id="postBlogForm">
+	<fieldset>
+		<legend>PartOne</legend>
+		<label>
+			Title:
+			<input type="text" name="title" />
+		</label>
+		<label>
+			Sub Title:
+			<input type="text" name="subTitle" />
+		</label>
+	</fieldset>
+	<fieldset>
+	<legend>PartTwo</legend>
+		<label>
+			Tags:
+			<input type="text" name="tags" />
+		</label>
+		<br />
+		<label>
+			Body:
+			<input type="text" name="body" />
+		</label>
+	</fieldset>
+	<p>
+		<input id="submitButtonId" type="submit" value="Post Now"/>
+	</p>
+</form>
+<script type="text/javascript">
+$("#submitButtonId").click(function() {
+	$.ajax({
+		type: "POST",
+		url: 'postBlogNow',
+		data: $("#postBlogForm").serialize(),
+		success: function(data)
+		{
+			if (data == "OK") {
+				//post was made, go to homepage
+				window.location = "/"
+			}
+		}
+	});
+	return false;
+});
+</script>
