@@ -25,11 +25,11 @@ module.exports = function(app, passport, FacebookStrategy, mongoose, User){
 		// asynchronous verification, for effect...
 		process.nextTick(function () {
 			//console.log(profile); //outputs info from facebook
-			User.findByUsername(profile.username, function(account) {
+			User.findByProviderID(profile._json.id, function(account) {
 				if (!account) {
 					//no accout was found, so make one
-					User.register(profile.name.givenName, profile.name.familyName, profile.provider, profile.gender,profile.profileUrl,profile.username);
-					return done(null, false, { message: 'Unknown user ' + profile.username }); //this needs to be re written
+					User.register(profile.name.givenName, profile.name.familyName, profile.provider, profile._json.id, profile.gender,profile.profileUrl,profile.username);
+					//return done(null, account, { message: 'New user ' + profile.username }); //this needs to be re written
 				}
 				return done(null, account);
 			})

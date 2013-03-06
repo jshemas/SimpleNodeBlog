@@ -5,6 +5,7 @@ module.exports = function(mongoose) {
 		first_name:  { type: String },
 		last_name:  { type: String },
 		provider:  { type: String },
+		provider_id:  { type: String },
 		gender:  { type: String },
 		profileUrl:  { type: String },
 		displayName:  { type: String }
@@ -19,29 +20,31 @@ module.exports = function(mongoose) {
 		return console.log('User was created!');
 	};
 
-	//finds account by user name
-	var findByUsername = function(accountId, callback) {
-		Account.findOne({displayName:accountId}, function(err,doc) {
+	//finds account by provider ID
+	var findByProviderID = function(accountId, callback) {
+		Account.findOne({provider_id:accountId}, function(err,doc) {
 			callback(doc);
 		});
 	};
 
 	//register the user with all this info
-	var register = function(first,last,provider,gender,profileUrl,displayName) {
+	var register = function(first,last,provider,provider_id,gender,profileUrl,displayName) {
 		var user = new Account({
 			first_name: first,
 			last_name: last,
 			provider: provider,
+			provider_id: provider_id,
 			gender: gender,
 			profileUrl: profileUrl,
 			displayName: displayName
 		});
 		user.save(registerCallback);
+		return ("Worked");
 	};
 
 	return {
 		Account: Account,
-		findByUsername: findByUsername,
+		findByProviderID: findByProviderID,
 		register: register
 	}
 };
