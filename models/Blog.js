@@ -35,7 +35,7 @@ module.exports = function(mongoose) {
 	// gets all blog entry(s)
 	var getBlogPost = function(callback) {
 		var query = Blog.find();
-		query.select('title subTitle body tags author');
+		query.select('title body _id');
 		//execute the query at a later time
 		query.exec(function (err, blog) {
 		if (err) return handleError(err);

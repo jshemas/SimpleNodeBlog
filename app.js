@@ -64,7 +64,7 @@ app.get('/', function(req, res){
 app.get('/blog/:blodID?', function(req, res){
 	var blodID = req.params.blodID;
 	Blog.getSingleBlogPost(blodID, function(blog) {
-		res.render('index', { user: req.user, blog: blog });
+		res.render('viewBlogPost', { user: req.user, blog: blog });
 	});
 });
 

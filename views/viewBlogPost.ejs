@@ -1,0 +1,11 @@
+ <% layout('layout') -%>
+ 
+<% if (!blog) { %>
+	<h2>Post not found</h2>
+<% } else { %>
+	<h1>Title: <%= blog.title %></h1>
+	<h2>SubTitle: <%= blog.subTitle %></h2>
+	<p>Body: <%= blog.body %></p>
+	<p>Author: <%= blog.author %></p>
+	<p>Tags: <%= blog.tags %></p>
+<% } %>

@@ -1,22 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>Simple Node Blog</title>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" media="screen">
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" media="screen">
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 	</head>
 	<body>
-		<% if (!user) { %>
-			<p>
-			<a href="/">Home</a> | 
-			<a href="/login">Log In</a>
-			</p>
-		<% } else { %>
-			<p>
-			<a href="/">Home</a> | 
-			<a href="/logout">Log Out</a> | 
-			<a href="/postBlog">Posty blog</a>
-			</p>
-		<% } %>
+	<div id="content">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="/">Simple Node Blog</a>
+					<div class="navbar-content">
+						<ul class="nav">
+							<% if (!user) { %>
+								<li class="active">
+									<a href="/">Home</a> 
+								</li>
+								<li>
+									<a href="/login">Login</a> 
+								</li>
+								<li>
+									<a href="/">About</a> 
+								</li>
+								<li>
+									<a href="/">Contact</a> 
+								</li>
+							<% } else { %>
+								<li class="active">
+									<a href="/">Home</a> 
+								</li>
+								<li>
+									<a href="/logout">Logout</a> 
+								</li>
+								<li>
+									<a href="/postBlog">Post Blog</a> 
+								</li>
+								<li>
+									<a href="/">About</a> 
+								</li>
+								<li>
+									<a href="/">Contact</a> 
+								</li>
+							<% } %>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 		<%- body %>
+	</div>
 	</body>
 </html>
