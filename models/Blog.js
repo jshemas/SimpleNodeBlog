@@ -6,7 +6,7 @@ module.exports = function(mongoose) {
 		tags: { type: String, required: false },
 		body: { type: String, required: true },
 		author: { type: String, required: false },
-		//createdDate: { type: Date, default: Date.now }
+		createdDate: { type: Date, default: Date.now }
 	})
 
 	var Blog = mongoose.model('Blog', blogPostSchema);
@@ -26,7 +26,6 @@ module.exports = function(mongoose) {
 			tags: tags,
 			body: body,
 			author: user.displayName
-			//createdDate: 'sometime'
 		});
 		blogPost.save(registerCallback);
 		return ("Worked");
@@ -46,7 +45,7 @@ module.exports = function(mongoose) {
 	// gets one blog entry (note the id pased to it)
 	var getSingleBlogPost = function(id, callback) {
 		var query = Blog.findOne({_id: id});
-		query.select('title subTitle body tags author');
+		query.select('title subTitle body tags author createdDate');
 		//execute the query at a later time
 		query.exec(function (err, blog) {
 		if (err) return handleError(err);
