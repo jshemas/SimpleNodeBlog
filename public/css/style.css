@@ -1,3 +1,4 @@
+/* styles for homepage blog tiles */
 .container-fluid .row-fluid .span9 .row-fluid .span4 {
 	background-color: #eee;
 	min-height: 280px;
@@ -5,6 +6,28 @@
 .container-fluid .row-fluid .span9 .row-fluid .span4 p{
 	min-height: 175px;
 }
+
+/* styles for blog list dropdown */
+.nav > li > span:hover {
+	text-decoration: none;
+	background-color: #EEE;
+}
+.nav > li > span {
+	display: block;
+}
+.nav-list > li > span> a {
+	text-decoration: none;
+}
+.nav-list > li > span{
+	margin-right: -15px;
+	margin-left: -15px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.nav-list > li > span {
+	padding: 3px 15px;
+}
+
+/* padding between divs */
 .blogSpacer {
 	margin-top: 40px;
 }

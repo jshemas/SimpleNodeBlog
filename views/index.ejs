@@ -5,23 +5,26 @@
 		<div class="span3">
 			<div class="well sidebar-nav">
 				<ul class="nav nav-list">
+					<li><a href="/" title="Blog List">Blog List</a></li>
 					<li class="nav-header">
-						October
-					</li>
-					<li class="">
-						<a href="/">
-							Blog post 1
-						</a>
-					</li>
-					<li class="">
-						<a href="/">
-							Blog post 2
-						</a>
-					</li>
-					<li class="">
-						<a href="/">
-							Blog post 3
-						</a>
+						<% var blogMonth = 0; var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; %>
+						<% if (blog) { %>
+							<% for(var i = 0; i < blog.length; i++) { %>
+								<% var blogPost = blog[i]; %>
+								<% var thisBlogMonth = blogPost.createdDate.getMonth(); %>
+								<% if (thisBlogMonth != blogMonth) { blogMonth = thisBlogMonth; %>
+									<span>
+										<a href="/" title="<%= monthNames[blogMonth] %>"><%= monthNames[blogMonth] %> </a>
+										<span class="icon-chevron-down pull-right" data-target="#<%= monthNames[blogMonth] %>" data-toggle="collapse"></span>
+									</span>
+									<ul class="nav nav-list collapse in" id="<%= monthNames[blogMonth] %>" >
+								<% } %>
+								<li><a href="/blog/<%= blogPost.id %>" title="<%= blogPost.title %>"><%= blogPost.title %></a></li>
+								<% if (i == blog.length) { %>
+									</ul>
+								<% } %>
+							<% } %>
+						<% } %>
 					</li>
 				</ul>
 			</div>
@@ -42,21 +45,21 @@
 					</div>
 				</div>
 			</div>
-				<% if (blog) { %>
-					<% var count = 0; %>
-					<% for(var i = 0; i < blog.length; i++) { %>
-						<% var blogPost = blog[i]; %>
-						<% if (count == 3) {count = 0} %>
-						<% if (count == 0) { %> <div class="row-fluid"> <% } %>
-						<div class="span4">
-							<h2><%= blogPost.title %></h2>
-							<p><%= blogPost.body %></p>
-							<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
-						</div>
-						<% if (count == 2) { %> </div> <div class="blogSpacer"></div><% } %>
-						<% count += 1 %>
-					<% } %>
+			<% if (blog) { %>
+				<% var count = 0; %>
+				<% for(var i = 0; i < blog.length; i++) { %>
+					<% var blogPost = blog[i]; %>
+					<% if (count == 3) {count = 0} %>
+					<% if (count == 0) { %> <div class="row-fluid"> <% } %>
+					<div class="span4">
+						<h2><%= blogPost.title %></h2>
+						<p><%= blogPost.body %></p>
+						<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
+					</div>
+					<% if (count == 2) { %> </div> <div class="blogSpacer"></div><% } %>
+					<% count += 1 %>
 				<% } %>
+			<% } %>
 		</div>
 	</div>
 </div>
