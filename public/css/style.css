@@ -1,0 +1,10 @@
+.container-fluid .row-fluid .span9 .row-fluid .span4 {
+	background-color: #eee;
+	min-height: 280px;
+}
+.container-fluid .row-fluid .span9 .row-fluid .span4 p{
+	min-height: 175px;
+}
+.blogSpacer {
+	margin-top: 40px;
+}

@@ -29,19 +29,21 @@
 	</p>
 </form>
 <script type="text/javascript">
-$("#submitButtonId").click(function() {
-	$.ajax({
-		type: "POST",
-		url: 'postBlogNow',
-		data: $("#postBlogForm").serialize(),
-		success: function(data)
-		{
-			if (data == "OK") {
-				//post was made, go to homepage
-				window.location = "/"
+$(document).ready(function() {
+	$("#submitButtonId").click(function() {
+		$.ajax({
+			type: "POST",
+			url: 'postBlogNow',
+			data: $("#postBlogForm").serialize(),
+			success: function(data)
+			{
+				if (data == "OK") {
+					//post was made, go to homepage
+					window.location = "/"
+				}
 			}
-		}
+		});
+		return false;
 	});
-	return false;
 });
 </script>
