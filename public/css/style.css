@@ -31,3 +31,8 @@
 .blogSpacer {
 	margin-top: 40px;
 }
+
+/* display none */
+.displayNone {
+	display: none;
+}

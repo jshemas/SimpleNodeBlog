@@ -9,4 +9,52 @@
 	<p>Author: <%= blog.author %></p>
 	<p>Tags: <%= blog.tags %></p>
 	<p>createdDate: <%= blog.createdDate %></p>
+	<% if (blog) { %>
+		<% for(var i = 0; i < blog.comment.length; i++) { %>
+			<% var blogComment = blog.comment[i]; %>
+			<p>author: <%= blogComment.author %></p>
+			<p>body: <%= blogComment.body %></p>
+		<% } %>
+	<% } %>
 <% } %>
+
+<div class="span4">
+	<div class="well well-large">
+		<form class="form-horizontal" id="postCommentForm">
+			<div class="displayNone">
+				<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>"">
+			</div>
+			<div class="control-group">
+				<label for="comment">Comment:</label>
+				<div>
+					<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
+				</div>
+			</div> 
+			<div class="control-group">
+				<div>
+					<button id="submitButtonId" type="submit" class="btn">Comment Now</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#submitButtonId").click(function() {
+		$.ajax({
+			type: "POST",
+			url: 'postCommentNow',
+			data: $("#postCommentForm").serialize(),
+			success: function(data)
+			{
+				if (data == "OK") {
+					//comment was made, go to homepage
+					window.location = "/"
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

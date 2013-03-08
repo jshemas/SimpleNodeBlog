@@ -57,6 +57,37 @@ app.post('/postBlogNow', function(req, res){
 	res.send(200);
 });
 
+// when a comment post is made
+app.post('/blog/postCommentNow', function(req, res){ 
+	var comment = req.param('comment', '');
+	var blogPostID = req.param('blogPostID', '');
+	//must have comment and blogID
+	if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
+		res.send(400);
+		return;
+	}
+	//must be logged in
+	if ( req.user == null ) {
+		res.send(400);
+		return;
+	}
+	//find blog
+	Blog.getSingleBlogPost(blogPostID, function(blog) {
+		comment = {
+			author: req.user.displayName,
+			body: comment
+		};
+		//add comment
+		blog.comment.push(comment);
+		blog.save(function (err) {
+			if (err) {
+				console.log('error saving comment: ' + err);
+			}
+		});
+	});
+	res.send(200);
+});
+
 // homepage
 app.get('/', function(req, res){
 	Blog.getBlogPost( function(blog) {
