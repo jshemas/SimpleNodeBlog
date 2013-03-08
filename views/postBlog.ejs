@@ -1,33 +1,41 @@
 <% layout('layout') -%>
 
-<form action="Send" id="postBlogForm">
-	<fieldset>
-		<legend>PartOne</legend>
-		<label>
-			Title:
-			<input type="text" name="title" />
-		</label>
-		<label>
-			Sub Title:
-			<input type="text" name="subTitle" />
-		</label>
-	</fieldset>
-	<fieldset>
-	<legend>PartTwo</legend>
-		<label>
-			Tags:
-			<input type="text" name="tags" />
-		</label>
-		<br />
-		<label>
-			Body:
-			<input type="text" name="body" />
-		</label>
-	</fieldset>
-	<p>
-		<input id="submitButtonId" type="submit" value="Post Now"/>
-	</p>
-</form>
+<div class="span4">
+	<div class="well well-large">
+		<form class="form-horizontal" id="postBlogForm">
+			<div class="control-group">
+				<label for="title">Title:</label>
+				<div>
+					<input type="text" name="title" id="title" placeholder="Title">
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="subTitle">Sub Title:</label>
+				<div>
+					<input type="text" name="subTitle" id="subTitle" placeholder="Sub Title">
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="tags">Tags:</label>
+				<div>
+					<input type="text" name="tags" id="tags" placeholder="Tags">
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="body">Body:</label>
+				<div>
+					<textarea name="body" id="body" placeholder="Body" rows="3"></textarea>
+				</div>
+			</div> 
+			<div class="control-group">
+				<div>
+					<button id="submitButtonId" type="submit" class="btn">Post Now</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#submitButtonId").click(function() {
