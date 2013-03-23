@@ -50,6 +50,7 @@ module.exports = function(mongoose) {
 
 	// gets one blog entry (note the id pased to it)
 	var getSingleBlogPost = function(id, callback) {
+		console.log("Looking for single blog post:",id);
 		var query = Blog.findOne({_id: id});
 		query.select('title subTitle body tags author createdDate comment');
 		//execute the query at a later time

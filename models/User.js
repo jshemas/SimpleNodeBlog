@@ -28,18 +28,24 @@ module.exports = function(mongoose) {
 	};
 
 	//register the user with all this info
-	var register = function(first,last,provider,provider_id,gender,profileUrl,displayName) {
-		var user = new Account({
-			first_name: first,
-			last_name: last,
-			provider: provider,
-			provider_id: provider_id,
-			gender: gender,
-			profileUrl: profileUrl,
-			displayName: displayName
-		});
-		user.save(registerCallback);
-		return ("Worked");
+	var register = function(first,last,provider,provider_id,gender,profileUrl,displayName,callback) {
+		findByProviderID(provider_id, function(account) {
+			if (!account) {
+					//no accout was found, so make one
+					console.log("not account found for reg");
+					var user = new Account({
+						first_name: first,
+						last_name: last,
+						provider: provider,
+						provider_id: provider_id,
+						gender: gender,
+						profileUrl: profileUrl,
+						displayName: displayName
+					});
+					user.save(registerCallback);
+			}
+			callback(account);
+		})
 	};
 
 	return {

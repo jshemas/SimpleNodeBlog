@@ -59,15 +59,22 @@ app.post('/postBlogNow', function(req, res){
 
 // when a comment post is made
 app.post('/blog/postCommentNow', function(req, res){ 
+	console.log("User trys to posts comment");
+	console.log("comment,",req.param('comment', ''));
+	console.log("gender,",req.param('gender', ''));
 	var comment = req.param('comment', '');
 	var blogPostID = req.param('blogPostID', '');
 	//must have comment and blogID
 	if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
+		console.log("User had bad comment or blogPostID");
+		console.log("comment:",comment);
+		console.log("blogPostID:",blogPostID);
 		res.send(400);
 		return;
 	}
 	//must be logged in
 	if ( req.user == null ) {
+		console.log("User was not logged in");
 		res.send(400);
 		return;
 	}
@@ -85,7 +92,7 @@ app.post('/blog/postCommentNow', function(req, res){
 			}
 		});
 	});
-	res.send(200);
+	res.send(200); 
 });
 
 // homepage
@@ -93,6 +100,16 @@ app.get('/', function(req, res){
 	Blog.getBlogPost( function(blog) {
 		res.render('index', { user: req.user, blog: blog });
 	});
+});
+
+// login test for commenting
+app.get('/blog/amilogin', function(req, res, next){
+	if ( req.user != null ) {
+		res.send(200);
+	} else {
+		res.send(203);
+	}
+	return;
 });
 
 // single blog post page
@@ -117,6 +134,60 @@ app.get('/login', function(req, res){
 app.get('/logout', function(req, res){
 	req.logout();
 	res.redirect('/');
+});
+
+// facebook channel
+app.get('/channel', function(req, res){
+	res.render('channel', { user: req.user });
+});
+
+// facebook reg
+app.post('/fbreg', function(req, res){
+	var provider_id = req.param('id', '');
+	var displayName = req.param('name', '');
+	var first = req.param('first_name', '');
+	var last = req.param('last_name', '');
+	var profileUrl = req.param('link', '');
+	var gender = req.param('gender', '');
+	var blogEvent = req.param('blogEvent', '');
+	console.log("blogEvent:",blogEvent);
+	var provider = 'facebook';
+	User.register(first,last,provider,provider_id,gender,profileUrl,displayName, function(account) {
+		if(account){
+			//there is an event
+			if(blogEvent) {
+				if(blogEvent.eventType == 'comment'){
+					var comment = blogEvent.comment
+					var blogPostID = blogEvent.blogPostID
+					//must have comment and blogID
+					if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
+						console.log("User had bad comment or blogPostID");
+						console.log("comment:",comment);
+						console.log("blogPostID:",blogPostID);
+						res.send(400);
+						return;
+					}
+					//find blog
+					Blog.getSingleBlogPost(blogPostID, function(blog) {
+						comment = {
+							author: account.displayName,
+							body: comment
+						};
+						//add comment
+						blog.comment.push(comment);
+						blog.save(function (err) {
+							if (err) {
+								console.log('error saving comment: ' + err);
+							}
+						});
+					});
+				}
+			}
+			res.send(200);
+		} else {
+			res.send(400);
+		}
+	});
 });
 
 // Simple route middleware to ensure user is authenticated.

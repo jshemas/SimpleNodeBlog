@@ -42,18 +42,12 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#submitButtonId").click(function() {
-		$.ajax({
-			type: "POST",
-			url: 'postCommentNow',
-			data: $("#postCommentForm").serialize(),
-			success: function(data)
-			{
-				if (data == "OK") {
-					//comment was made, go to homepage
-					window.location = document.URL;
-				}
-			}
-		});
+		blogEvent = {
+			'eventType':'comment',
+			'blogPostID':$('#blogPostID').val(),
+			'comment':$('#comment').val()
+		};
+		getLoginStatus(blogEvent);
 		return false;
 	});
 });
