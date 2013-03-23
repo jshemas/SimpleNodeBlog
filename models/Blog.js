@@ -31,7 +31,7 @@ module.exports = function(mongoose) {
 			subTitle: subTitle,
 			tags: tags,
 			body: body,
-			author: user.displayName
+			author: user
 		});
 		blogPost.save(registerCallback);
 		return ("Worked");

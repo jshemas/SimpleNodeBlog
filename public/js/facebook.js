@@ -30,7 +30,7 @@ function testAPI(blogEvent) {
 		response.blogEvent = blogEvent;
 		$.ajax({
 			type: "POST",
-			url: '/fbreg',
+			url: '/fbEvent',
 			data: response,
 			success: function(data) {
 				console.log("data:",data);
