@@ -44,7 +44,8 @@ $(document).ready(function() {
 			'title':$('#title').val(),
 			'subTitle':$('#subTitle').val(),
 			'tags':$('#tags').val(),
-			'body':$('#body').val()
+			'body':$('#body').val(),
+			'location':document.URL
 		};
 		getLoginStatus(blogEvent);
 		return false;

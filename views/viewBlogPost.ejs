@@ -45,7 +45,8 @@ $(document).ready(function() {
 		blogEvent = {
 			'eventType':'comment',
 			'blogPostID':$('#blogPostID').val(),
-			'comment':$('#comment').val()
+			'comment':$('#comment').val(),
+			'location':document.URL
 		};
 		getLoginStatus(blogEvent);
 		return false;

@@ -30,7 +30,9 @@ function testAPI(blogEvent) {
 			url: '/fbEvent',
 			data: response,
 			success: function(data) {
-				console.log(data);
+				if(data == 'OK') {
+					location.href = blogEvent.location;
+				}
 			}
 		});
 	});
