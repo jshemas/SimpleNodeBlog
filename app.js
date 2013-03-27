@@ -51,6 +51,11 @@ app.get('/postBlog', function(req, res){
 	res.render('postBlog');
 });
 
+// login page, used by admin
+app.get('/login', function(req, res){
+	res.render('login');
+});
+
 // facebook channel
 app.get('/channel', function(req, res){
 	res.render('channel');

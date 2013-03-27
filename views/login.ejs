@@ -1,1 +1,44 @@
-<a href="/auth/facebook"><img src="img/login-with-facebook.png" width="154" height="22"></a>
+<% layout('layout') -%>
+
+<div class="span4">
+	<div class="well well-large">
+		<form class="form-horizontal" id="loginForm">
+			<div class="control-group">
+				<label for="email">Email:</label>
+				<div>
+					<input type="text" name="email" id="email" placeholder="Email">
+				</div>
+			</div>
+			<div class="control-group">
+				<label for="password">Password:</label>
+				<div>
+					<input type="text" name="password" id="password" placeholder="Password">
+				</div>
+			</div>
+			<div class="control-group">
+				<div>
+					<button id="submitButtonId" type="submit" class="btn">Login Now</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#submitButtonId").click(function() {
+			$.ajax({
+			type: "POST",
+			url: 'postBlogNow',
+			data: $("#loginForm").serialize(),
+			success: function(data)	{
+				if (data == "OK") {
+					//login worked
+					window.location = "/"
+				}
+			}
+			});
+			return false;
+		});
+	});
+</script>
