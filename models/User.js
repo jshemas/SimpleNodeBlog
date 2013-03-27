@@ -8,7 +8,8 @@ module.exports = function(mongoose) {
 		provider_id:  { type: String },
 		gender:  { type: String },
 		profileUrl:  { type: String },
-		displayName:  { type: String }
+		displayName:  { type: String },
+		email: { type: String }
 	});
 
 	var Account = mongoose.model('Account', AccountSchema);
@@ -23,6 +24,13 @@ module.exports = function(mongoose) {
 	//finds account by provider ID
 	var findByProviderID = function(accountId, callback) {
 		Account.findOne({provider_id:accountId}, function(err,doc) {
+			callback(doc);
+		});
+	};
+	
+	//login page - used by admin
+	var login = function(email, password, callback) {
+		Account.findOne({email:email,password:password},function(err,doc){
 			callback(doc);
 		});
 	};
