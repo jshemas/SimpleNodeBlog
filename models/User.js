@@ -58,6 +58,7 @@ module.exports = function(mongoose) {
 
 	return {
 		Account: Account,
+		login: login,
 		findByProviderID: findByProviderID,
 		register: register
 	}

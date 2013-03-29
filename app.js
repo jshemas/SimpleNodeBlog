@@ -56,6 +56,33 @@ app.get('/login', function(req, res){
 	res.render('login');
 });
 
+// logout page, used by admin
+app.get('/logout', function(req, res){
+	req.session.destroy(function(err){ });
+	res.redirect('/'); //go back to index
+});
+
+// login page, used by admin
+app.post('/userlogin', function(req, res){
+	var email = req.param('email', ''),
+	password = req.param('password', '');
+	//vaile email and password
+	if ( null == email || email.length < 1 || null == password || password.length < 1 ) {
+		res.send(400);
+		return;
+	};
+
+	User.login(email, password, function(account) {
+		if (!account) {
+			res.send(401);
+			return;
+		}
+		req.session.loggedIn = true;
+		req.session.accountId = account._id;
+		res.send(200);
+	});
+});
+
 // facebook channel
 app.get('/channel', function(req, res){
 	res.render('channel');

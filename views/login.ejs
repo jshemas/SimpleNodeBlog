@@ -29,7 +29,7 @@
 		$("#submitButtonId").click(function() {
 			$.ajax({
 			type: "POST",
-			url: 'postBlogNow',
+			url: 'userlogin',
 			data: $("#loginForm").serialize(),
 			success: function(data)	{
 				if (data == "OK") {
