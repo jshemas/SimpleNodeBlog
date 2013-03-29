@@ -1,41 +1,52 @@
  <% layout('layout') -%>
- 
-<% if (!blog) { %>
-	<h2>Post not found</h2>
-<% } else { %>
-	<h1>Title: <%= blog.title %></h1>
-	<h2>SubTitle: <%= blog.subTitle %></h2>
-	<p>Body: <%= blog.body %></p>
-	<p>Author: <%= blog.author %></p>
-	<p>Tags: <%= blog.tags %></p>
-	<p>createdDate: <%= blog.createdDate %></p>
-	<% if (blog) { %>
-		<% for(var i = 0; i < blog.comment.length; i++) { %>
-			<% var blogComment = blog.comment[i]; %>
-			<p>author: <%= blogComment.author %></p>
-			<p>body: <%= blogComment.body %></p>
-		<% } %>
-	<% } %>
-<% } %>
+ <div class="container-fluid">
+ 	<div class="row-fluid">
+		<div class="span9">
+			<% if (!blog) { %>
+				<h2>Post not found</h2>
+			<% } else { %>
+				<ul class="media-list">
+					<li class="media">
+						<div class="media-body">
+							<h1 class="media-heading"><%= blog.title %></h1>
+							<h5><%= blog.subTitle %> | <%= blog.createdDate %></h5>
+							<%= blog.body %>
+							<h6 style="text-align: right;">
+								Tags: <%= blog.tags %>
+							</h6>
+							<% for(var i = 0; i < blog.comment.length; i++) { %>
+								<div class="media">
+									<% var blogComment = blog.comment[i]; %>
+									<p><%= blogComment.body %></p>
+									<p style="text-align: right;">-<%= blogComment.author %></p>
+								</div>
+							<% } %>
+						</div>
+					</li>
+				</ul>
+			<% } %>
 
-<div class="span4">
-	<div class="well well-large">
-		<form class="form-horizontal" id="postCommentForm">
-			<div class="displayNone">
-				<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>"">
-			</div>
-			<div class="control-group">
-				<label for="comment">Comment:</label>
-				<div>
-					<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
+			<div class="span4">
+				<div class="well well-large">
+					<form class="form-horizontal" id="postCommentForm">
+						<div class="displayNone">
+							<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>"">
+						</div>
+						<div class="control-group">
+							<label for="comment">Comment:</label>
+							<div>
+								<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
+							</div>
+						</div> 
+						<div class="control-group">
+							<div>
+								<button id="submitButtonId" type="submit" class="btn">Comment Now</button>
+							</div>
+						</div>
+					</form>
 				</div>
-			</div> 
-			<div class="control-group">
-				<div>
-					<button id="submitButtonId" type="submit" class="btn">Comment Now</button>
-				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 
