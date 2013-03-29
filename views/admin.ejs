@@ -39,15 +39,17 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#submitButtonId").click(function() {
-		blogEvent = {
-			'eventType':'blogpost',
-			'title':$('#title').val(),
-			'subTitle':$('#subTitle').val(),
-			'tags':$('#tags').val(),
-			'body':$('#body').val(),
-			'location':document.URL
-		};
-		getLoginStatus(blogEvent);
+		$.ajax({
+			type: "POST",
+			url: 'postBlogNow',
+			data: $("#postBlogForm").serialize(),
+			success: function(data) {
+				if (data == "OK") {
+					//post was made, go to homepage
+					window.location = "/"
+				}
+			}
+		});
 		return false;
 	});
 });

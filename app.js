@@ -46,10 +46,35 @@ app.get('/blog/:blodID?', function(req, res){
 	});
 });
 
-// post a blog page
-app.get('/postBlog', function(req, res){
-	res.render('postBlog');
+// admin page
+app.get('/admin', function(req, res){
+	if ( req.session.loggedIn == true || req.session.accountId == '5154ede66f71b40939e32982' ) {
+		res.render('admin');
+	} else {
+		res.redirect('/'); //not a admin
+	}
 });
+
+// when a blog post is made
+app.post('/postBlogNow', function(req, res){ 
+	var title = req.param('title', '');
+	var subTitle = req.param('subTitle', '');
+	var tags = req.param('tags', '');
+	var body = req.param('body', '');
+	//must have title and body
+	if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
+		res.send(400);
+		return;
+	}
+	//must be logged in
+	if ( req.session.loggedIn != true || req.session.accountId != '5154ede66f71b40939e32982' ) {
+		res.send(400);
+		return;
+	}
+	Blog.blogPost(title, subTitle, tags, body, req.session.displayName); //go to blogPost in models
+	res.send(200);
+});
+
 
 // login page, used by admin
 app.get('/login', function(req, res){
@@ -79,6 +104,7 @@ app.post('/userlogin', function(req, res){
 		}
 		req.session.loggedIn = true;
 		req.session.accountId = account._id;
+		req.session.displayName = account.displayName;
 		res.send(200);
 	});
 });
@@ -130,18 +156,6 @@ app.post('/fbEvent', function(req, res){
 							}
 						});
 					});
-				// if blog post
-				} else if (blogEvent.eventType == 'blogpost') {
-					var title = blogEvent.title;
-					var subTitle = blogEvent.subTitle;
-					var tags = blogEvent.tags;
-					var body = blogEvent.body;
-					//must have title and body
-					if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
-						res.send(400);
-						return;
-					}
-					Blog.blogPost(title, subTitle, tags, body, account.displayName); //go to blogPost in models
 				}
 			}
 			res.send(200);
