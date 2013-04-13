@@ -3,6 +3,8 @@
 	<div class="row-fluid">
 		<div class="span2 visible-desktop"></div>
 		<div class="span8">
+			<% var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; %>
+			<% var weekDay = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]; %>
 			<% if (!blog) { %>
 				<h2>Post not found</h2>
 			<% } else { %>
@@ -10,7 +12,7 @@
 					<li class="media">
 						<div class="media-body">
 							<h1 class="media-heading"><%= blog.title %></h1>
-							<h5><%= blog.subTitle %> | <%= blog.createdDate %></h5>
+							<h5><%= blog.subTitle %> | <%= weekDay[blog.createdDate.getDay()] %>, <%= monthNames[blog.createdDate.getMonth()] %> <%= blog.createdDate.getDate() %>, <%= blog.createdDate.getFullYear() %></h5>
 							<%= blog.body %>
 							<h6 style="text-align: right;">
 								Tags: <%= blog.tags %>
