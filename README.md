@@ -2,6 +2,7 @@ Simple Node Blog
 =======
 
 This is my attempt at building a blog using Node.js
+(still a work in progress)
 
 ### Installation
 
