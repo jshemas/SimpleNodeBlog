@@ -31,7 +31,52 @@
 			</div>
 		</div>
 		<div class="span8">
-			Talk to me!
+			<div class="well well-large">
+				<form class="form-horizontal" id="emailmeForm">
+					<div class="control-group">
+						<label for="email">Email:</label>
+						<div>
+							<input type="text" name="email" id="email" placeholder="Email">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="name">Name:</label>
+						<div>
+							<input type="text" name="name" id="name" placeholder="Name">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="message">Message:</label>
+						<div>
+							<textarea name="message" id="message" placeholder="Message" rows="3"></textarea>
+						</div>
+					</div> 
+					<div class="control-group">
+						<div>
+							<button id="submitButtonId" type="submit" class="btn">Email Me</button>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#submitButtonId").click(function() {
+			$.ajax({
+				type: "POST",
+				url: '/emailme',
+				data: $("#emailmeForm").serialize(),
+				success: function(data) {
+					if (data == "OK") {
+						//email was made, go to homepage
+						window.location = "/";
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>

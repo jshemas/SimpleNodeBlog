@@ -4,6 +4,14 @@ var app = express();
 var MemoryStore = require('connect').session.MemoryStore;
 var dbPath = 'mongodb://localhost/something';
 var mongoose = require('mongoose');
+var email   = require("emailjs/email");
+
+var emailServer  = email.server.connect({
+	user: "something@gmail.com", 
+	password: "password", 
+	host: "smtp.gmail.com", 
+	ssl: true
+});
 
 // use ejs-locals for all ejs templates:
 app.engine('ejs', engine);
@@ -155,6 +163,26 @@ app.post('/postCommentNow', function(req, res){
 		} else {
 			res.send(400);
 		}
+	});
+});
+
+// email me
+app.post('/emailme', function(req, res){
+	//set vars
+	var email = req.param('email', ''),
+		emailmessage = req.param('message', ''),
+		name = req.param('name', '');
+	//build email message
+	emailmessage = emailmessage + " - " + name + " @ " + email;
+	// send it!
+	emailServer.send({
+		text: emailmessage, 
+		from: email, 
+		to: "something@gmail.com", //your email
+		subject: "Simple Node Blog"
+	}, function(err, message) { 
+		//console.log(err || message); 
+		res.send(200);
 	});
 });
 
