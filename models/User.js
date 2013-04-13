@@ -21,10 +21,8 @@ module.exports = function(mongoose) {
 		Account.findOne({email:email,password:password},function(err,doc){
 			//only admins can log in
 			if(doc.isAdmin == true){
-				console.log("dszf");
 				callback(doc);
 			} else {
-				console.log("dszfff",doc);
 				callback();
 			}
 		});
