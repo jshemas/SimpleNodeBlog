@@ -33,23 +33,28 @@
 				</div>
 			</div>
 		</form>
+		<div id="error"></div>
 	</div>
 </div>
 
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#submitButtonId").click(function() {
-		$.ajax({
-			type: "POST",
-			url: 'postBlogNow',
-			data: $("#postBlogForm").serialize(),
-			success: function(data) {
-				if (data == "OK") {
-					//post was made, go to homepage
-					window.location = "/"
+		if($('#title').val().length > 1 && $('#subTitle').val().length > 1 && $('#tags').val().length > 1 && $('#body').val().length > 1) {
+			$.ajax({
+				type: "POST",
+				url: 'postBlogNow',
+				data: $("#postBlogForm").serialize(),
+				success: function(data) {
+					if (data == "OK") {
+						//post was made, go to homepage
+						window.location = "/"
+					}
 				}
-			}
-		});
+			});
+		} else {
+			document.getElementById("error").innerHTML="Fill out all fields!";
+		};
 		return false;
 	});
 });

@@ -28,22 +28,26 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#submitButtonId").click(function() {
-			$.ajax({
-				type: "POST",
-				url: 'userlogin',
-				data: $("#loginForm").serialize(),
-				success: function(data)	{
-					if (data == "OK") {
-						//login worked
-						window.location = "/"
+			if($('#email').val().length > 1 && $('#password').val().length > 1) {
+				$.ajax({
+					type: "POST",
+					url: 'userlogin',
+					data: $("#loginForm").serialize(),
+					success: function(data)	{
+						if (data == "OK") {
+							//login worked
+							window.location = "/"
+						}
+					},
+					statusCode: {
+						401:function() {
+							document.getElementById("error").innerHTML="LogIn Failed";
+						}
 					}
-				},
-				statusCode: {
-					401:function() {
-						document.getElementById("error").innerHTML="LogIn Failed";
-					}
-				}
-			});
+				});
+			} else {
+				document.getElementById("error").innerHTML="Fill out all fields!";
+			};
 			return false;
 		});
 	});

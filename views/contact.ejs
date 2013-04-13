@@ -57,6 +57,7 @@
 						</div>
 					</div>
 				</form>
+				<div id="error"></div>
 			</div>
 		</div>
 	</div>
@@ -65,17 +66,21 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#submitButtonId").click(function() {
-			$.ajax({
-				type: "POST",
-				url: '/emailme',
-				data: $("#emailmeForm").serialize(),
-				success: function(data) {
-					if (data == "OK") {
-						//email was made, go to homepage
-						window.location = "/";
+			if($('#email').val().length > 1 && $('#name').val().length > 1 && $('#message').val().length > 1) {
+				$.ajax({
+					type: "POST",
+					url: '/emailme',
+					data: $("#emailmeForm").serialize(),
+					success: function(data) {
+						if (data == "OK") {
+							//email was made, go to homepage
+							window.location = "/";
+						}
 					}
-				}
-			});
+				});
+			} else {
+				document.getElementById("error").innerHTML="Fill out all fields!";
+			};
 			return false;
 		});
 	});
