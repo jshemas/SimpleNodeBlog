@@ -3,7 +3,8 @@ module.exports = function(mongoose) {
 	var AccountSchema = new mongoose.Schema({
 		password:  { type: String },
 		displayName:  { type: String },
-		email: { type: String }
+		email: { type: String },
+		isAdmin: { type: Boolean}
 	});
 
 	var Account = mongoose.model('Account', AccountSchema);
@@ -18,7 +19,14 @@ module.exports = function(mongoose) {
 	//login page - used by admin
 	var login = function(email, password, callback) {
 		Account.findOne({email:email,password:password},function(err,doc){
-			callback(doc);
+			//only admins can log in
+			if(doc.isAdmin == true){
+				console.log("dszf");
+				callback(doc);
+			} else {
+				console.log("dszfff",doc);
+				callback();
+			}
 		});
 	};
 
@@ -31,6 +39,7 @@ module.exports = function(mongoose) {
 				var user = new Account({
 					email: email,
 					displayName: displayName,
+					isAdmin: 'false'
 				});
 
 				// make that user!

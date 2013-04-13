@@ -70,7 +70,7 @@ app.get('/blog/:blodID?', function(req, res){
 
 // admin page
 app.get('/admin', function(req, res){
-	if ( req.session.loggedIn == true || req.session.accountId == '5154ede66f71b40939e32982' ) {
+	if ( req.session.loggedIn == true ) {
 		res.render('admin');
 	} else {
 		res.redirect('/'); //not a admin
@@ -89,7 +89,7 @@ app.post('/postBlogNow', function(req, res){
 		return;
 	}
 	//must be logged in
-	if ( req.session.loggedIn != true || req.session.accountId != '5154ede66f71b40939e32982' ) {
+	if ( req.session.loggedIn != true ) {
 		res.send(400);
 		return;
 	}
@@ -125,8 +125,6 @@ app.post('/userlogin', function(req, res){
 			return;
 		}
 		req.session.loggedIn = true;
-		req.session.accountId = account._id;
-		req.session.displayName = account.displayName;
 		res.send(200);
 	});
 });
