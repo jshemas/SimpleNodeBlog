@@ -31,32 +31,7 @@
 			</div>
 		</div>
 		<div class="span8">
-			<div class="hero-unit">
-				<div class="media">
-					<a class="pull-left" href="#">
-						<img class="media-object" src="http://placehold.it/250x300">
-					</a>
-					<div class="media-body">
-						<h1 class="media-heading">Simple Node Blog</h1>
-						<p>Welcome! Please log in.</p>
-					</div>
-				</div>
-			</div>
-			<% if (blog) { %>
-				<% var count = 0; %>
-				<% for(var i = 0; i < 9; i++) { %>
-					<% var blogPost = blog[i]; %>
-					<% if (count == 3) {count = 0} %>
-					<% if (count == 0) { %> <div class="row-fluid"> <% } %>
-					<div class="span4 well">
-						<h2><%= blogPost.title %></h2>
-						<p><%= blogPost.body %></p>
-						<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
-					</div>
-					<% if (count == 2) { %> </div> <div class="blogSpacer"></div><% } %>
-					<% count += 1 %>
-				<% } %>
-			<% } %>
+			Talk to me!
 		</div>
 	</div>
 </div>

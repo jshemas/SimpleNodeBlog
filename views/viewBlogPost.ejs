@@ -1,7 +1,8 @@
  <% layout('layout') -%>
- <div class="container-fluid">
- 	<div class="row-fluid">
-		<div class="span9">
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2 visible-desktop"></div>
+		<div class="span8">
 			<% if (!blog) { %>
 				<h2>Post not found</h2>
 			<% } else { %>
@@ -25,7 +26,6 @@
 					</li>
 				</ul>
 			<% } %>
-
 			<div class="span4">
 				<div class="well well-large">
 					<form class="form-horizontal" id="postCommentForm">

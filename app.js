@@ -38,6 +38,20 @@ app.get('/', function(req, res){
 	});
 });
 
+// about me page
+app.get('/about', function(req, res){
+	Blog.getBlogPost( function(blog) {
+		res.render('about', { blog: blog });
+	});
+});
+
+// contact me page
+app.get('/contact', function(req, res){
+	Blog.getBlogPost( function(blog) {
+		res.render('contact', { blog: blog });
+	});
+});
+
 // single blog post page
 app.get('/blog/:blodID?', function(req, res){
 	var blodID = req.params.blodID;
@@ -142,11 +156,6 @@ app.post('/postCommentNow', function(req, res){
 			res.send(400);
 		}
 	});
-});
-
-// facebook channel
-app.get('/channel', function(req, res){
-	res.render('channel');
 });
 
 // run on port 8080
