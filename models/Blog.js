@@ -29,7 +29,6 @@ module.exports = function(mongoose) {
 		// make that blog post!
 		blogPost.save( function(err, results){
 			// should we log err?
-			callback(results);
 		});
 	};
 
