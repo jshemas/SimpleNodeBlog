@@ -1,6 +1,4 @@
  <% layout('layout') -%>
-<div id="fb-root"></div>
-<script type="text/javascript" src="/js/facebook.js"></script>
  <div class="container-fluid">
  	<div class="row-fluid">
 		<div class="span9">
@@ -35,6 +33,18 @@
 							<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>" />
 						</div>
 						<div class="control-group">
+							<label for="email">Email:</label>
+							<div>
+								<input type="text" name="email" id="email" placeholder="Email">
+							</div>
+						</div>
+						<div class="control-group">
+							<label for="name">Name:</label>
+							<div>
+								<input type="text" name="name" id="name" placeholder="Name">
+							</div>
+						</div>
+						<div class="control-group">
 							<label for="comment">Comment:</label>
 							<div>
 								<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
@@ -53,16 +63,20 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$("#submitButtonId").click(function() {
-		blogEvent = {
-			'eventType':'comment',
-			'blogPostID':$('#blogPostID').val(),
-			'comment':$('#comment').val(),
-			'location':document.URL
-		};
-		getLoginStatus(blogEvent);
-		return false;
+	$(document).ready(function() {
+		$("#submitButtonId").click(function() {
+			$.ajax({
+				type: "POST",
+				url: '/postCommentNow',
+				data: $("#postCommentForm").serialize(),
+				success: function(data) {
+					if (data == "OK") {
+						//comment was made, go to homepage
+						window.location = window.location;
+					}
+				}
+			});
+			return false;
+		});
 	});
-});
 </script>

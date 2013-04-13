@@ -109,60 +109,44 @@ app.post('/userlogin', function(req, res){
 	});
 });
 
-// facebook channel
-app.get('/channel', function(req, res){
-	res.render('channel');
-});
-
-// facebook event
-app.post('/fbEvent', function(req, res){
-	var provider_id = req.param('id', ''),
-		displayName = req.param('name', ''),
-		first = req.param('first_name', ''),
-		last = req.param('last_name', ''),
-		profileUrl = req.param('link', ''),
-		gender = req.param('gender', ''),
-		blogEvent = req.param('blogEvent', ''),
-		provider = 'facebook';
-	//first reg the accout (or find it)
-	User.register(first,last,provider,provider_id,gender,profileUrl,displayName, function(account) {
+// post comment
+app.post('/postCommentNow', function(req, res){
+	var email = req.param('email', ''),
+		comment = req.param('comment', ''),
+		name = req.param('name', ''),
+		blogPostID = req.param('blogPostID', '');
+	User.register(email,name, function(account) {
 		//found the account
 		if(account){
-			//there is an event
-			if(blogEvent) {
-				//comment event
-				if(blogEvent.eventType == 'comment'){
-					var comment = blogEvent.comment;
-					var blogPostID = blogEvent.blogPostID;
-					//must have comment and blogID
-					if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
-						console.log("User had bad comment or blogPostID");
-						console.log("comment:",comment);
-						console.log("blogPostID:",blogPostID);
-						res.send(400);
-						return;
-					}
-					//find blog
-					Blog.getSingleBlogPost(blogPostID, function(blog) {
-						comment = {
-							author: account.displayName,
-							body: comment
-						};
-						//add comment
-						blog.comment.push(comment);
-						blog.save(function (err) {
-							if (err) {
-								console.log('error saving comment: ' + err);
-							}
-						});
-					});
-				}
+			//must have comment and blogID
+			if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
+				res.send(400);
+				return;
 			}
+			//find blog
+			Blog.getSingleBlogPost(blogPostID, function(blog) {
+				comment = {
+					author: account.displayName,
+					body: comment
+				};
+				//add comment
+				blog.comment.push(comment);
+				blog.save(function (err) {
+					if (err) {
+						console.log('error saving comment: ' + err);
+					}
+				});
+			});
 			res.send(200);
 		} else {
 			res.send(400);
 		}
 	});
+});
+
+// facebook channel
+app.get('/channel', function(req, res){
+	res.render('channel');
 });
 
 // run on port 8080
