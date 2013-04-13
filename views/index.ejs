@@ -13,8 +13,9 @@
 								<% var blogPost = blog[i]; %>
 								<% var thisBlogMonth = blogPost.createdDate.getMonth(); %>
 								<% if (thisBlogMonth != blogMonth) { blogMonth = thisBlogMonth; %>
+									</ul>
 									<span>
-										<a href="/blog/<%= blogPost.id %>" title="<%= monthNames[blogMonth] %>"><%= monthNames[blogMonth] %> </a>
+										<a href="/" title="<%= monthNames[blogMonth] %>"><%= monthNames[blogMonth] %> </a>
 										<span class="icon-chevron-down pull-right" data-target="#<%= monthNames[blogMonth] %>" data-toggle="collapse"></span>
 									</span>
 									<ul class="nav nav-list collapse in" id="<%= monthNames[blogMonth] %>" >
