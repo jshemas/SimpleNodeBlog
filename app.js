@@ -1,10 +1,10 @@
-var express = require('express');
-var engine = require('ejs-locals');
-var app = express();
-var MemoryStore = require('connect').session.MemoryStore;
-var dbPath = 'mongodb://localhost/something';
-var mongoose = require('mongoose');
-var email   = require("emailjs/email");
+var express = require('express'),
+	engine = require('ejs-locals'),
+	app = express(),
+	MemoryStore = require('connect').session.MemoryStore,
+	dbPath = 'mongodb://localhost/something',
+	mongoose = require('mongoose'),
+	email = require("emailjs/email");
 
 // import models
 var Blog = require('./models/Blog')(mongoose);
@@ -40,7 +40,7 @@ app.configure(function() {
 	app.use(express.static(__dirname + '/public'));
 });
 
-// routes
+// set routes
 var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, emailServer);
 
 // run on port 8080

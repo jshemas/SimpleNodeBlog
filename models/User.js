@@ -57,5 +57,5 @@ module.exports = function(mongoose) {
 		login: login,
 		findByEmail: findByEmail,
 		register: register
-	}
+	};
 };

@@ -17,13 +17,6 @@ module.exports = function(mongoose) {
 
 	var Blog = mongoose.model('Blog', blogPostSchema);
 
-	var registerCallback = function(err) {
-		if (err) {
-			return console.log(err);
-		};
-		return console.log('Blog post was created!');
-	};
-
 	// this posts the blog entry
 	var blogPost = function(title, subTitle, tags, body, user) {
 		var blogPost = new Blog({
@@ -33,8 +26,11 @@ module.exports = function(mongoose) {
 			body: body,
 			author: user
 		});
-		blogPost.save(registerCallback);
-		return ("Worked");
+		// make that blog post!
+		blogPost.save( function(err, results){
+			// should we log err?
+			callback(results);
+		});
 	};
 
 	// gets all blog entry(s)
@@ -50,7 +46,6 @@ module.exports = function(mongoose) {
 
 	// gets one blog entry (note the id pased to it)
 	var getSingleBlogPost = function(id, callback) {
-		console.log("Looking for single blog post:",id);
 		var query = Blog.findOne({_id: id});
 		query.select('title subTitle body tags author createdDate comment');
 		//execute the query at a later time
@@ -65,5 +60,5 @@ module.exports = function(mongoose) {
 		blogPost: blogPost,
 		getBlogPost: getBlogPost,
 		getSingleBlogPost: getSingleBlogPost
-	}
+	};
 };

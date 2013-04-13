@@ -1,7 +1,7 @@
 {
 	"name": "Simple-Node-Blog",
 	"description": "A simple blog wrote in NodeJS.",
-	"version": "0.1.0",
+	"version": "0.1.5",
 	"private": true,
 	"author": {
 		"name": "Josh Shemas",

@@ -30,7 +30,7 @@ module.exports = function(app, Blog, User, mongoose, emailServer) {
 	 * GET Admin Page
 	 */
 	app.get('/admin', function(req, res){
-		if ( req.session.loggedIn == true ) {
+		if (req.session.loggedIn == true){
 			res.render('admin');
 		} else {
 			res.redirect('/'); //not a admin
@@ -49,18 +49,20 @@ module.exports = function(app, Blog, User, mongoose, emailServer) {
 	 */
 	app.post('/userlogin', function(req, res){
 		var email = req.param('email', ''),
-		password = req.param('password', '');
-		//vaile email and password
+			password = req.param('password', '');
+		//is email and password set?
 		if ( null == email || email.length < 1 || null == password || password.length < 1 ) {
 			res.send(400);
 			return;
 		};
-
+		// try to login
 		User.login(email, password, function(account) {
 			if (!account) {
+				//account not found
 				res.send(401);
 				return;
 			}
+			//set session
 			req.session.loggedIn = true;
 			res.send(200);
 		});
@@ -88,10 +90,10 @@ module.exports = function(app, Blog, User, mongoose, emailServer) {
 	 * POST A Blog - From Admin Page
 	 */
 	app.post('/postBlogNow', function(req, res){ 
-		var title = req.param('title', '');
-		var subTitle = req.param('subTitle', '');
-		var tags = req.param('tags', '');
-		var body = req.param('body', '');
+		var title = req.param('title', ''),
+			subTitle = req.param('subTitle', ''),
+			tags = req.param('tags', ''),
+			body = req.param('body', '');
 		//must have title and body
 		if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
 			res.send(400);
