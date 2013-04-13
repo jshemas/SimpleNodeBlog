@@ -1,4 +1,6 @@
  <% layout('layout') -%>
+<div id="fb-root"></div>
+<script type="text/javascript" src="/js/facebook.js"></script>
  <div class="container-fluid">
  	<div class="row-fluid">
 		<div class="span9">
@@ -30,7 +32,7 @@
 				<div class="well well-large">
 					<form class="form-horizontal" id="postCommentForm">
 						<div class="displayNone">
-							<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>"">
+							<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>" />
 						</div>
 						<div class="control-group">
 							<label for="comment">Comment:</label>

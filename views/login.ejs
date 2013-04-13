@@ -21,6 +21,7 @@
 				</div>
 			</div>
 		</form>
+		<div id="error"></div>
 	</div>
 </div>
 
@@ -28,15 +29,20 @@
 	$(document).ready(function() {
 		$("#submitButtonId").click(function() {
 			$.ajax({
-			type: "POST",
-			url: 'userlogin',
-			data: $("#loginForm").serialize(),
-			success: function(data)	{
-				if (data == "OK") {
-					//login worked
-					window.location = "/"
+				type: "POST",
+				url: 'userlogin',
+				data: $("#loginForm").serialize(),
+				success: function(data)	{
+					if (data == "OK") {
+						//login worked
+						window.location = "/"
+					}
+				},
+				statusCode: {
+					401:function() {
+						document.getElementById("error").innerHTML="LogIn Failed";
+					}
 				}
-			}
 			});
 			return false;
 		});
