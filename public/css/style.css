@@ -36,3 +36,8 @@
 .displayNone {
 	display: none;
 }
+
+/* bug - input/textarea extend outside of well */ 
+input, textarea {
+	max-width: 100%;
+} 
