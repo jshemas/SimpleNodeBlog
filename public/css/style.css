@@ -1,9 +1,9 @@
 /* styles for homepage blog tiles */
-.container-fluid .row-fluid .span9 .row-fluid .span4 {
-	background-color: #eee;
+.container-fluid .row-fluid .span8 .row-fluid .span4 {
+	background-color: #fefefe;
 	min-height: 280px;
 }
-.container-fluid .row-fluid .span9 .row-fluid .span4 p{
+.container-fluid .row-fluid .span8 .row-fluid .span4 p{
 	min-height: 175px;
 }
 
