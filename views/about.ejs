@@ -2,34 +2,7 @@
 
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span2 visible-desktop">
-			<div class="well sidebar-nav">
-				<ul class="nav nav-list">
-					<li><a href="/bloglist" title="Blog List">Blog List</a></li>
-					<li class="nav-header">
-						<% var blogMonth = 0; var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; %>
-						<% if (blog) { %>
-							<% for(var i = 0; i < blog.length; i++) { %>
-								<% var blogPost = blog[i]; %>
-								<% var thisBlogMonth = blogPost.createdDate.getMonth(); %>
-								<% if (thisBlogMonth != blogMonth) { blogMonth = thisBlogMonth; %>
-									</ul>
-									<span>
-										<a href="/" title="<%= monthNames[blogMonth] %>"><%= monthNames[blogMonth] %> </a>
-										<span class="icon-chevron-down pull-right" data-target="#<%= monthNames[blogMonth] %>" data-toggle="collapse"></span>
-									</span>
-									<ul class="nav nav-list collapse in" id="<%= monthNames[blogMonth] %>" >
-								<% } %>
-								<li><a href="/blog/<%= blogPost.id %>" title="<%= blogPost.title %>"><%= blogPost.title %></a></li>
-								<% if (i == blog.length) { %>
-									</ul>
-								<% } %>
-							<% } %>
-						<% } %>
-					</li>
-				</ul>
-			</div>
-		</div>
+		<% include blogSideBar %>
 		<div class="span8">
 			Some facts about me!
 		</div>
