@@ -5,7 +5,7 @@
 		<div class="span8">
 			<% var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; %>
 			<% var weekDay = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]; %>
-			<% if (!blog) { %>
+			<% if (blog = "not_found") { %>
 				<h2>Post not found</h2>
 			<% } else { %>
 				<ul class="media-list">
@@ -27,40 +27,40 @@
 						</div>
 					</li>
 				</ul>
-			<% } %>
-			<div class="span4">
-				<div class="well well-large">
-					<form class="form-horizontal" id="postCommentForm">
-						<div class="displayNone">
-							<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>" />
-						</div>
-						<div class="control-group">
-							<label for="email">Email:</label>
-							<div>
-								<input type="text" name="email" id="email" placeholder="Email">
+				<div class="span4">
+					<div class="well well-large">
+						<form class="form-horizontal" id="postCommentForm">
+							<div class="displayNone">
+								<input type="text" name="blogPostID" id="blogPostID" value="<%= blog.id %>" />
 							</div>
-						</div>
-						<div class="control-group">
-							<label for="name">Name:</label>
-							<div>
-								<input type="text" name="name" id="name" placeholder="Name">
+							<div class="control-group">
+								<label for="email">Email:</label>
+								<div>
+									<input type="text" name="email" id="email" placeholder="Email">
+								</div>
 							</div>
-						</div>
-						<div class="control-group">
-							<label for="comment">Comment:</label>
-							<div>
-								<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
+							<div class="control-group">
+								<label for="name">Name:</label>
+								<div>
+									<input type="text" name="name" id="name" placeholder="Name">
+								</div>
 							</div>
-						</div> 
-						<div class="control-group">
-							<div>
-								<button id="submitButtonId" type="submit" class="btn">Comment Now</button>
+							<div class="control-group">
+								<label for="comment">Comment:</label>
+								<div>
+									<textarea name="comment" id="comment" placeholder="Comment" rows="3"></textarea>
+								</div>
+							</div> 
+							<div class="control-group">
+								<div>
+									<button id="submitButtonId" type="submit" class="btn">Comment Now</button>
+								</div>
 							</div>
-						</div>
-					</form>
-					<div id="error"></div>
+						</form>
+						<div id="error"></div>
+					</div>
 				</div>
-			</div>
+			<% } %>
 		</div>
 	</div>
 </div>
