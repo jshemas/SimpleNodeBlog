@@ -87,6 +87,15 @@ module.exports = function(app, Blog, User, mongoose, emailServer) {
 	});
 
 	/*
+	 * GET Blog List Page
+	 */
+	app.get('/bloglist', function(req, res){
+		Blog.getBlogPost( function(blog) {
+			res.render('bloglist', { blog: blog });
+		});
+	});
+
+	/*
 	 * POST A Blog - From Admin Page
 	 */
 	app.post('/postBlogNow', function(req, res){ 

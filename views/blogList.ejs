@@ -31,30 +31,24 @@
 			</div>
 		</div>
 		<div class="span8">
-			<div class="hero-unit">
-				<div class="media">
-					<a class="pull-left" href="#">
-						<img class="media-object" src="http://placehold.it/250x300">
-					</a>
-					<div class="media-body">
-						<h1 class="media-heading">Simple Node Blog</h1>
-						<p>Welcome! Please log in.</p>
-					</div>
-				</div>
-			</div>
 			<% if (blog) { %>
-				<% var count = 0; %>
-				<% for(var i = 0; i < 9; i++) { %>
+				<% var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]; %>
+				<% var weekDay = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ]; %>
+				<% for(var i = 0; i < blog.length; i++) { %>
 					<% var blogPost = blog[i]; %>
-					<% if (count == 3) {count = 0} %>
-					<% if (count == 0) { %> <div class="row-fluid"> <% } %>
-					<div class="span4 well">
-						<h2><%= blogPost.title %></h2>
-						<p><%=: blogPost.body | truncate:250 %>...</p>
-						<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
-					</div>
-					<% if (count == 2) { %> </div> <div class="blogSpacer"></div><% } %>
-					<% count += 1 %>
+					<ul class="media-list well well-large">
+						<li class="media">
+							<div class="media-body">
+								<h1 class="media-heading"><%= blogPost.title %></h1>
+								<h5><%= blogPost.subTitle %> | <%= weekDay[blogPost.createdDate.getDay()] %>, <%= monthNames[blogPost.createdDate.getMonth()] %> <%= blogPost.createdDate.getDate() %>, <%= blogPost.createdDate.getFullYear() %></h5>
+								<p><%=: blogPost.body | truncate:250 %>...</p>
+								<h6 style="text-align: right;">
+									Tags: <%= blogPost.tags %>
+								</h6>
+								<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
+							</div>
+						</li>
+					</ul>
 				<% } %>
 			<% } %>
 		</div>
