@@ -47,11 +47,14 @@ module.exports = function(mongoose) {
 	var getSingleBlogPost = function(id, callback) {
 		var query = Blog.findOne({_id: id});
 		query.select('title subTitle body tags author createdDate comment');
-		//execute the query at a later time
-		query.exec(function (err, blog) {
-		if (err) return handleError(err);
-			callback(blog);
-		})
+		query.exec(function(err, results){
+			// Check for an error   
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
+		});
 	};
 
 	return {

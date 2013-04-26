@@ -82,7 +82,11 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	app.get('/blog/:blodID?', function(req, res){
 		var blodID = req.params.blodID;
 		Blog.getSingleBlogPost(blodID, function(blog) {
-			res.render('viewBlogPost', { blog: blog });
+			var blogResults = blog;
+			if(!blog) {
+				blogResults = 'not_found';
+			};
+			res.render('viewBlogPost', {blog: blogResults});
 		});
 	});
 
