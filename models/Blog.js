@@ -1,4 +1,4 @@
-module.exports = function(mongoose) {
+module.exports = function(mongoose, winston) {
 	var Comment = new mongoose.Schema({
 		author: { type: String, required: true },
 		body: { type: String, required: true }
@@ -45,6 +45,7 @@ module.exports = function(mongoose) {
 
 	// gets one blog entry (note the id pased to it)
 	var getSingleBlogPost = function(id, callback) {
+		winston.info('Loading Blod ID:'+id);
 		var query = Blog.findOne({_id: id});
 		query.select('title subTitle body tags author createdDate comment');
 		query.exec(function(err, results){

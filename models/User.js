@@ -1,4 +1,4 @@
-module.exports = function(mongoose) {
+module.exports = function(mongoose, winston) {
 	// Account Schema
 	var AccountSchema = new mongoose.Schema({
 		password:  { type: String },
@@ -11,6 +11,7 @@ module.exports = function(mongoose) {
 
 	//look up users by email
 	var findByEmail = function(email, callback) {
+		winston.info('Looking up Email:'+email);
 		Account.findOne({email:email}, function(err,doc) {
 			callback(doc);
 		});
@@ -18,6 +19,7 @@ module.exports = function(mongoose) {
 	
 	//login page - used by admin
 	var login = function(email, password, callback) {
+		winston.info('Login on account:'+email);
 		Account.findOne({email:email,password:password},function(err,doc){
 			//only admins can log in
 			if(doc && doc.isAdmin && doc.isAdmin == true){

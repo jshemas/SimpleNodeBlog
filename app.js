@@ -5,11 +5,15 @@ var express = require('express'),
 	dbPath = 'mongodb://localhost/something',
 	mongoose = require('mongoose'),
 	email = require("emailjs/email"),
-	fs = require('fs');
+	winston = require('winston');
+
+// set up the logger
+winston.add(winston.transports.File, { filename: 'infoLog.log' });
+winston.remove(winston.transports.Console);
 
 // import models
-var Blog = require('./models/Blog')(mongoose);
-var User = require('./models/User')(mongoose);
+var Blog = require('./models/Blog')(mongoose, winston);
+var User = require('./models/User')(mongoose, winston);
 
 // load config (if you see an error here, its because you don't have a config file)
 var config = require('./config')(email);
