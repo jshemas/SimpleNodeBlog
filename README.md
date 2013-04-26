@@ -13,6 +13,8 @@ npm install
 node app
 ```
 
+You'll also have to set a config.js, I have included an example.
+
 ## License
 
 (The MIT License)

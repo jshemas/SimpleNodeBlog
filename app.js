@@ -4,19 +4,15 @@ var express = require('express'),
 	MemoryStore = require('connect').session.MemoryStore,
 	dbPath = 'mongodb://localhost/something',
 	mongoose = require('mongoose'),
-	email = require("emailjs/email");
+	email = require("emailjs/email"),
+	fs = require('fs');
 
 // import models
 var Blog = require('./models/Blog')(mongoose);
 var User = require('./models/User')(mongoose);
 
-// config for emailjs for the contact page
-var emailServer  = email.server.connect({
-	user: "something@gmail.com", 
-	password: "password", 
-	host: "smtp.gmail.com", 
-	ssl: true
-});
+// load config (if you see an error here, its because you don't have a config file)
+var config = require('./config')(email);
 
 // use ejs-locals for all ejs templates:
 app.engine('ejs', engine);
@@ -41,7 +37,7 @@ app.configure(function() {
 });
 
 // set routes
-var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, emailServer);
+var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, config);
 
 // run on port 8080
 app.listen(8080);

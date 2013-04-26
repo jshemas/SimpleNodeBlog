@@ -1,4 +1,4 @@
-module.exports = function(app, Blog, User, mongoose, emailServer) {
+module.exports = function(app, Blog, User, mongoose, config) {
 	/*
 	 * GET Home Page
 	 */
@@ -165,10 +165,10 @@ module.exports = function(app, Blog, User, mongoose, emailServer) {
 		//build email message
 		emailmessage = emailmessage + " - " + name + " @ " + email;
 		// send it!
-		emailServer.send({
+		config.emailServer.send({
 			text: emailmessage, 
 			from: email, 
-			to: "something@gmail.com", //your email
+			to: config.emailAccount,
 			subject: "Simple Node Blog"
 		}, function(err, message) { 
 			//console.log(err || message); 
