@@ -58,10 +58,25 @@ module.exports = function(mongoose, winston) {
 		});
 	};
 
+	// edit that blog post!
+	var blogEditPost = function(title, subTitle, tags, body, user, blogID){
+		var blogUpdate = { $set: { 
+			title: title,
+			subTitle: subTitle,
+			tags: tags,
+			body: body,
+			author: user
+		}};
+		Blog.update({_id:blogID},blogUpdate,{upsert: true}, function(err, results){ 
+			// should we log err?
+		});
+	};
+
 	return {
 		Blog: Blog,
 		blogPost: blogPost,
 		getBlogPost: getBlogPost,
-		getSingleBlogPost: getSingleBlogPost
+		getSingleBlogPost: getSingleBlogPost,
+		blogEditPost: blogEditPost
 	};
 };

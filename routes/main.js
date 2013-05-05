@@ -38,6 +38,49 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	});
 
 	/*
+	 * GET Admin Page - Get Blog Post
+	 */
+	app.get('/admin/blog/:blodID?', function(req, res){
+		var blodID = req.params.blodID;
+		Blog.getSingleBlogPost(blodID, function(blog) {
+			var blogResults = blog;
+			if(!blog) {
+				blogResults = 'not_found';
+			};
+			//console.log("blogResults",blogResults);
+			res.json(blogResults);
+		});
+	});
+
+	/*
+	 * POST Admin Page - Edit Blog Post
+	 */
+	app.post('/admin/editBlogNow', function(req, res){
+		var title = req.param('editTitle', ''),
+			subTitle = req.param('editSubTitle', ''),
+			tags = req.param('editTags', ''),
+			body = req.param('editBody', ''),
+			blogID = req.param('theBlogID', '');
+		//must have title and body
+		if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
+			res.send(400);
+			return;
+		}
+		//must have a ID
+		if ( blogID == null || blogID.length < 1 ) {
+			res.send(400);
+			return;
+		}
+		//must be logged in
+		if ( req.session.loggedIn != true ) {
+			res.send(400);
+			return;
+		}
+		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID); //go to blogEditPost in models
+		res.send(200);
+	});
+
+	/*
 	 * GET Login Page
 	 */
 	app.get('/login', function(req, res){
@@ -64,6 +107,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			}
 			//set session
 			req.session.loggedIn = true;
+			req.session.displayName = account.displayName;
 			res.send(200);
 		});
 	});
@@ -147,7 +191,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 					blog.comment.push(comment);
 					blog.save(function (err) {
 						if (err) {
-							console.log('error saving comment: ' + err);
+							//console.log('error saving comment: ' + err);
 						}
 					});
 				});

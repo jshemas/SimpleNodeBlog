@@ -34,7 +34,7 @@
 
 /* display none */
 .displayNone {
-	display: none;
+	display: none !important;
 }
 
 /* bug - input/textarea extend outside of well */ 

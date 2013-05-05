@@ -1,59 +1,157 @@
 <% layout('layout') -%>
 
-<div class="span4">
-	<div class="well well-large">
-		<form class="form-horizontal" id="postBlogForm">
-			<div class="control-group">
-				<label for="title">Title:</label>
-				<div>
-					<input type="text" name="title" id="title" placeholder="Title">
-				</div>
+
+<div class="row-fluid">
+	<div class="span4 well postClick">
+		<h3>Post a Blog?<h3>
+		<div id="postDiv" class="span12 displayNone">
+			<div class="well well-large">
+				<form class="form-horizontal" id="postBlogForm">
+					<div class="control-group">
+						<label for="title">Title:</label>
+						<div>
+							<input type="text" name="title" id="title" placeholder="Title">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="subTitle">Sub Title:</label>
+						<div>
+							<input type="text" name="subTitle" id="subTitle" placeholder="Sub Title">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="tags">Tags:</label>
+						<div>
+							<input type="text" name="tags" id="tags" placeholder="Tags">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="body">Body:</label>
+						<div>
+							<textarea name="body" id="body" placeholder="Body" rows="3"></textarea>
+						</div>
+					</div> 
+					<div class="control-group">
+						<div>
+							<button id="submitPostButtonId" type="submit" class="btn">Post Now</button>
+						</div>
+					</div>
+				</form>
+				<div id="postError"></div>
 			</div>
-			<div class="control-group">
-				<label for="subTitle">Sub Title:</label>
-				<div>
-					<input type="text" name="subTitle" id="subTitle" placeholder="Sub Title">
-				</div>
+		</div>
+	</div>
+	<div class="span4 well editClick">
+		<h3>Edit a Blog?</h3>
+		<input type="text" name="blogID" id="blogID" placeholder="Blog ID">
+		<button id="submitEditButtonId" type="submit" class="btn">Find Now</button>
+		<div id="editError"></div>
+		<div id="editDiv" class="span12 displayNone">
+			<div class="well well-large">
+				<form class="form-horizontal" id="editBlogForm">
+					<div class="control-group">
+						<label for="title">Title:</label>
+						<div>
+							<input type="text" name="editTitle" id="editTitle" placeholder="Title">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="subTitle">Sub Title:</label>
+						<div>
+							<input type="text" name="editSubTitle" id="editSubTitle" placeholder="Sub Title">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="tags">Tags:</label>
+						<div>
+							<input type="text" name="editTags" id="editTags" placeholder="Tags">
+						</div>
+					</div>
+					<div class="control-group">
+						<label for="body">Body:</label>
+						<div>
+							<textarea name="editBody" id="editBody" placeholder="editBody" rows="3"></textarea>
+						</div>
+					</div> 
+					<div class="control-group">
+						<div>
+							<input type="hidden" name="theBlogID" id="theBlogID" placeholder="theBlogID">
+						</div>
+					</div> 
+					<div class="control-group">
+						<div>
+							<button id="submitEditBlogButtonId" type="submit" class="btn">Edit Now</button>
+						</div>
+					</div>
+				</form>
 			</div>
-			<div class="control-group">
-				<label for="tags">Tags:</label>
-				<div>
-					<input type="text" name="tags" id="tags" placeholder="Tags">
-				</div>
-			</div>
-			<div class="control-group">
-				<label for="body">Body:</label>
-				<div>
-					<textarea name="body" id="body" placeholder="Body" rows="3"></textarea>
-				</div>
-			</div> 
-			<div class="control-group">
-				<div>
-					<button id="submitButtonId" type="submit" class="btn">Post Now</button>
-				</div>
-			</div>
-		</form>
-		<div id="error"></div>
+		</div>
 	</div>
 </div>
 
+
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#submitButtonId").click(function() {
+	// user wants to post a new blog
+	$(".postClick").click(function(){
+		$('#postDiv').removeClass('displayNone');
+	});
+	// user is posting blog data
+	$("#submitPostButtonId").click(function() {
 		if($('#title').val().length > 1 && $('#tags').val().length > 1 && $('#body').val().length > 1) {
 			$.ajax({
-				type: "POST",
+				type: 'POST',
 				url: 'postBlogNow',
 				data: $("#postBlogForm").serialize(),
 				success: function(data) {
-					if (data == "OK") {
-						//post was made, go to homepage
-						window.location = "/"
-					};
+					$('#postDiv').addClass('displayNone');
 				}
 			});
 		} else {
-			document.getElementById("error").innerHTML="Fill out all fields!";
+			document.getElementById('postError').innerHTML="Fill out all fields!";
+		};
+		return false;
+	});
+	//user looking up blog to edit
+	$("#submitEditButtonId").click(function() {
+		if($('#blogID').val().length > 1) {
+			var url = '/admin/blog/' + $('#blogID').val();
+			$.ajax({
+				type: 'GET',
+				url: url,
+				data: 'JSON',
+				success: function(data) {
+					if (data == "not_found") {
+						//could not find post
+						document.getElementById('editError').innerHTML="Could not find!";
+					} else {
+						//found something
+						document.getElementById('editError').innerHTML="";
+						$('#editDiv').removeClass('displayNone');
+						//set form
+						document.getElementById('editTitle').value=data.title;
+						document.getElementById('editSubTitle').value=data.subTitle;
+						document.getElementById('editTags').value=data.tags;
+						document.getElementById('editBody').value=data.body;
+						document.getElementById('theBlogID').value=data._id;
+					};
+				}
+			});
+		};
+	});
+	//user is editing that blog
+	$("#submitEditBlogButtonId").click(function() {
+		if($('#editTitle').val().length > 1 && $('#editTags').val().length > 1 && $('#editBody').val().length > 1 && $('#blogID').val().length > 1) {
+			$.ajax({
+				type: 'POST',
+				url: '/admin/editBlogNow',
+				data: $("#editBlogForm").serialize(),
+				success: function(data) {
+					$('#editDiv').addClass('displayNone');
+				}
+			});
+		} else {
+			document.getElementById('editError').innerHTML="Fill out all fields!";
 		};
 		return false;
 	});
