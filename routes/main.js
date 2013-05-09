@@ -1,4 +1,8 @@
 module.exports = function(app, Blog, User, mongoose, config) {
+
+	// define utils
+	var validateVar = require('./utils.js').validateVar;
+
 	/*
 	 * GET Home Page
 	 */
@@ -62,15 +66,10 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			body = req.param('editBody', ''),
 			blogID = req.param('theBlogID', '');
 		//must have title and body
-		if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
-			res.send(400);
-			return;
-		}
+		if(validateVar(title)) res.send(400);
+		if(validateVar(body)) res.send(400);
 		//must have a ID
-		if ( blogID == null || blogID.length < 1 ) {
-			res.send(400);
-			return;
-		}
+		if(validateVar(blogID)) res.send(400);
 		//must be logged in
 		if ( req.session.loggedIn != true ) {
 			res.send(400);
@@ -94,10 +93,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		var email = req.param('email', ''),
 			password = req.param('password', '');
 		//is email and password set?
-		if ( null == email || email.length < 1 || null == password || password.length < 1 ) {
-			res.send(400);
-			return;
-		};
+		if(validateVar(email)) res.send(400);
+		if(validateVar(password)) res.send(400);
 		// try to login
 		User.login(email, password, function(account) {
 			if (!account) {
@@ -152,10 +149,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			tags = req.param('tags', ''),
 			body = req.param('body', '');
 		//must have title and body
-		if ( title == null || title.length < 1 || body == null || body.length < 1 ) {
-			res.send(400);
-			return;
-		}
+		if(validateVar(title)) res.send(400);
+		if(validateVar(body)) res.send(400);
 		//must be logged in
 		if ( req.session.loggedIn != true ) {
 			res.send(400);
@@ -177,10 +172,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			//found the account
 			if(account){
 				//must have comment and blogID
-				if ( comment == null || comment.length < 1 || blogPostID == null || blogPostID.length < 1 ) {
-					res.send(400);
-					return;
-				}
+				if(validateVar(comment)) res.send(400);
+				if(validateVar(blogPostID)) res.send(400);
 				//find blog
 				Blog.getSingleBlogPost(blogPostID, function(blog) {
 					comment = {
