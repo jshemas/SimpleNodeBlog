@@ -1,18 +1,16 @@
 {
 	"name": "Simple-Node-Blog",
 	"description": "A simple blog wrote in NodeJS.",
-	"version": "0.1.5",
-	"private": true,
+	"version": "0.2.0",
 	"author": {
-		"name": "Josh Shemas",
-		"email": "jshemas@hotmail.com"
+		"name": "Josh Shemas"
 	},
 	"dependencies": {
-		"express": "3.0.6",
-		"ejs": "0.8.3",
+		"express": "3.2.3",
+		"ejs": "0.8.4",
 		"ejs-locals": "1.0.2",
-		"mongoose": "3.5.7",
-		"connect": "2.7.3",
+		"mongoose": "3.6.9",
+		"connect": "2.7.9",
 		"emailjs": "0.3.4",
 		"winston": "0.7.1"
 	}
