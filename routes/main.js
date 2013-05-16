@@ -71,11 +71,56 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		//must have a ID
 		if(validateVar(blogID)) res.send(400);
 		//must be logged in
-		if ( req.session.loggedIn != true ) {
-			res.send(400);
-			return;
-		}
+		if (req.session.loggedIn != true) res.send(400);
 		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID); //go to blogEditPost in models
+		res.send(200);
+	});
+
+	/*
+	 * POST Admin Page - Delete Blog Post
+	 */
+	app.post('/admin/deleteBlogNow', function(req, res){
+		var blogID = req.param('theBlogID', '');
+		//must have a ID
+		if(validateVar(blogID)) res.send(400);
+		//must be logged in
+		if (req.session.loggedIn != true) res.send(400);
+		Blog.blogDeletePost(blogID); //go to blogDeletePost in models
+		res.send(200);
+	});
+
+	/*
+	 * POST Admin Page - Edit Blog Comment
+	 */
+	app.post('/admin/editBlogCommentNow', function(req, res){
+		var author = req.param('editAuthor', ''),
+			body = req.param('editBody', ''),
+			blogID = req.param('theBlogID', '');
+			commentID = req.param('theCommentID', '');
+		//must have author and body
+		if(validateVar(author)) res.send(400);
+		if(validateVar(body)) res.send(400);
+		//must have a ID
+		if(validateVar(blogID)) res.send(400);
+		if(validateVar(commentID)) res.send(400);
+		//must be logged in
+		if (req.session.loggedIn != true) res.send(400);
+		Blog.blogEditComment(author, body, req.session.displayName, commentID, blogID); //go to blogEditComment in models
+		res.send(200);
+	});
+	
+	/*
+	 * POST Admin Page - Delete Blog Comment
+	 */
+	app.post('/admin/deleteCommentNow', function(req, res){
+		var blogID = req.param('theBlogID', '');
+			commentID = req.param('theCommentID', '');
+		//must have a ID
+		if(validateVar(blogID)) res.send(400);
+		if(validateVar(commentID)) res.send(400);
+		//must be logged in
+		if (req.session.loggedIn != true) res.send(400);
+		Blog.blogDeleteComment(commentID, blogID); //go to blogDeleteComment in models
 		res.send(200);
 	});
 
@@ -152,10 +197,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		if(validateVar(title)) res.send(400);
 		if(validateVar(body)) res.send(400);
 		//must be logged in
-		if ( req.session.loggedIn != true ) {
-			res.send(400);
-			return;
-		}
+		if (req.session.loggedIn != true) res.send(400);
 		Blog.blogPost(title, subTitle, tags, body, req.session.displayName); //go to blogPost in models
 		res.send(200);
 	});
@@ -174,7 +216,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 				//must have comment and blogID
 				if(validateVar(comment)) res.send(400);
 				if(validateVar(blogPostID)) res.send(400);
-				//find blog
+				//this needs to be moved to Blog.js
+				//find blog 
 				Blog.getSingleBlogPost(blogPostID, function(blog) {
 					comment = {
 						author: account.displayName,

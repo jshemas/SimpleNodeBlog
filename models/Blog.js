@@ -1,4 +1,5 @@
 module.exports = function(mongoose, winston) {
+	//TODO - store comment email
 	var Comment = new mongoose.Schema({
 		author: { type: String, required: true },
 		body: { type: String, required: true }
@@ -72,11 +73,42 @@ module.exports = function(mongoose, winston) {
 		});
 	};
 
+	//  delete that blog post!
+	var blogDeletePost = function(blogID){
+		Blog.find({_id:blogID}).remove();
+		//log this?
+	};
+
+	// edit that blog comment!
+	var blogEditComment = function(author, body, user, theCommentID, blogID){
+		// maybe we should log when this is edited
+		var commentUpdate = { $set: { 
+			'comment.$.body': body,
+			'comment.$.author': author
+		}};
+		Blog.update({_id:blogID, 'comment._id':theCommentID},commentUpdate,{upsert: true}, function(err, results){ 
+			// should we log err?
+		});
+	};
+
+	// delete that blog comment!
+	var blogDeleteComment = function(theCommentID, blogID){
+		var commentUpdate = { $pull: { 
+			comment:{_id:theCommentID}
+		}};
+		Blog.update({_id:blogID},commentUpdate, function(err, results){ 
+			// should we log err?
+		});
+	};
+
 	return {
 		Blog: Blog,
 		blogPost: blogPost,
 		getBlogPost: getBlogPost,
 		getSingleBlogPost: getSingleBlogPost,
-		blogEditPost: blogEditPost
+		blogEditPost: blogEditPost,
+		blogDeletePost: blogDeletePost,
+		blogEditComment: blogEditComment,
+		blogDeleteComment: blogDeleteComment
 	};
 };

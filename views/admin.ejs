@@ -77,13 +77,18 @@
 						<div>
 							<input type="hidden" name="theBlogID" id="theBlogID" placeholder="theBlogID">
 						</div>
-					</div> 
+					</div>
 					<div class="control-group">
 						<div>
-							<button id="submitEditBlogButtonId" type="submit" class="btn">Edit Now</button>
+							<button id="submitEditBlogButtonId" type="submit" class="btn">Edit Blog Now</button>
+							<button id="submitDeletetBlogButtonId" type="submit" class="btn">Remove Blog</button>
 						</div>
 					</div>
 				</form>
+				<label for="comments">Comments:</label>
+				<div id="commentHolder">
+
+				</div>
 			</div>
 		</div>
 	</div>
@@ -127,6 +132,7 @@ $(document).ready(function() {
 					} else {
 						//found something
 						document.getElementById('editError').innerHTML="";
+						document.getElementById('commentHolder').innerHTML="";
 						$('#editDiv').removeClass('displayNone');
 						//set form
 						document.getElementById('editTitle').value=data.title;
@@ -134,6 +140,15 @@ $(document).ready(function() {
 						document.getElementById('editTags').value=data.tags;
 						document.getElementById('editBody').value=data.body;
 						document.getElementById('theBlogID').value=data._id;
+						if(data.comment){
+							//this is so hackish, plese forgive programming gods
+							for (var i = 0; i <= data.comment.length; i++) {
+								var commentData = data.comment[i];
+								if (typeof commentData != 'undefined') {
+									document.getElementById('commentHolder').innerHTML += "<form class='form-horizontal well' id="+commentData._id+" ><div class='control-group'><label for='author'>Author:</label><div><input type='text' name='editAuthor' id='editAuthor' value="+commentData.author+" placeholder="+commentData.author+"></div></div><div class='control-group'><label for='body'>Body:</label><div><textarea name='editBody' id='editBody' placeholder="+commentData.body+" rows='3'>"+commentData.body+"</textarea></div></div> <div class='control-group'><div><input type='hidden' name='theBlogID' id='theBlogID' value="+data._id+"></div></div><div class='control-group'><div><input type='hidden' name='theCommentID' id='theCommentID' value="+commentData._id+"></div></div><div class='control-group'><div><button type='submit' class='btn submitEditCommentButtonClass'>Edit Comment</button><button id='submitDeletetBlogCommentButtonId' type='submit' class='btn'>Remove Comment</button></div></div></form>";
+								};
+							};
+						};
 					};
 				}
 			});
@@ -153,6 +168,45 @@ $(document).ready(function() {
 		} else {
 			document.getElementById('editError').innerHTML="Fill out all fields!";
 		};
+		return false;
+	});
+	//user is deletes that blog
+	$("#submitDeletetBlogButtonId").click(function() {
+		$.ajax({
+			type: 'POST',
+			url: '/admin/deleteBlogNow',
+			data: $("#editBlogForm").serialize(),
+			success: function(data) {
+				$('#editDiv').addClass('displayNone');
+			}
+		});
+		return false;
+	});
+	//user is editing some comment
+	$(".submitEditCommentButtonClass").live('click',function() {
+		commentData = $(this).closest('form');
+		//need to see if data is there		
+		$.ajax({
+			type: 'POST',
+			url: '/admin/editBlogCommentNow',
+			data: commentData.serialize(),
+			success: function(data) {
+				location.reload();
+			}
+		});
+		return false;
+	});
+	//user is deletes that blog
+	$("#submitDeletetBlogCommentButtonId").live('click',function() {
+		commentData = $(this).closest('form');
+		$.ajax({
+			type: 'POST',
+			url: '/admin/deleteCommentNow',
+			data: commentData.serialize(),
+			success: function(data) {
+				location.reload();
+			}
+		});
 		return false;
 	});
 });
