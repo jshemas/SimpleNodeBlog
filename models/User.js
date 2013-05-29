@@ -54,10 +54,25 @@ module.exports = function(mongoose, winston) {
 		})
 	};
 
+	// running the blog for the first time
+	var firstRunBlogUser = function() {
+		var testAccount = new Account({
+			password: 'password',
+			displayName: 'displayName',
+			email: 'email',
+			isAdmin: true
+		});
+		// make that user!
+		testAccount.save( function(err, results){
+			// should we log err?
+		});
+	}
+
 	return {
 		Account: Account,
 		login: login,
 		findByEmail: findByEmail,
-		register: register
+		register: register,
+		firstRunBlogUser: firstRunBlogUser
 	};
 };

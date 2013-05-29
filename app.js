@@ -2,7 +2,7 @@ var express = require('express'),
 	engine = require('ejs-locals'),
 	app = express(),
 	MemoryStore = require('connect').session.MemoryStore,
-	dbPath = 'mongodb://localhost/something1',
+	dbPath = 'mongodb://localhost/something',
 	mongoose = require('mongoose'),
 	email = require("emailjs/email"),
 	winston = require('winston'),
@@ -49,6 +49,7 @@ var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, c
 if (argv.s) {
 	console.log("Running Blog for the first time!");
 	Blog.firstRunBlogPost();
+	User.firstRunBlogUser();
 };
 
 // run on port 8080

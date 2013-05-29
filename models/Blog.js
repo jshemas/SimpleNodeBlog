@@ -40,7 +40,6 @@ module.exports = function(mongoose, winston) {
 		//execute the query at a later time
 		query.exec(function (err, blog) {
 		if (err) return handleError(err);
-			console.log(blog);
 			callback(blog);
 		})
 	};
@@ -104,7 +103,6 @@ module.exports = function(mongoose, winston) {
 
 	// running the blog for the first time
 	var firstRunBlogPost = function() {
-		console.log("Gooooo!!1!!");
 		var testPost = new Blog({
 			title: 'Test Title',
 			subTitle: 'Test SubTitle',
