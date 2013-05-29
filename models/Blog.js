@@ -40,6 +40,7 @@ module.exports = function(mongoose, winston) {
 		//execute the query at a later time
 		query.exec(function (err, blog) {
 		if (err) return handleError(err);
+			console.log(blog);
 			callback(blog);
 		})
 	};
@@ -101,6 +102,22 @@ module.exports = function(mongoose, winston) {
 		});
 	};
 
+	// running the blog for the first time
+	var firstRunBlogPost = function() {
+		console.log("Gooooo!!1!!");
+		var testPost = new Blog({
+			title: 'Test Title',
+			subTitle: 'Test SubTitle',
+			body: 'Body Test',
+			tags: 'Test Tags, Test Tags, Test Tags',
+			author: 'Test Author'
+		});
+		// make that blog post!
+		testPost.save( function(err, results){
+			// should we log err?
+		});
+	}
+
 	return {
 		Blog: Blog,
 		blogPost: blogPost,
@@ -109,6 +126,7 @@ module.exports = function(mongoose, winston) {
 		blogEditPost: blogEditPost,
 		blogDeletePost: blogDeletePost,
 		blogEditComment: blogEditComment,
-		blogDeleteComment: blogDeleteComment
+		blogDeleteComment: blogDeleteComment,
+		firstRunBlogPost: firstRunBlogPost
 	};
 };

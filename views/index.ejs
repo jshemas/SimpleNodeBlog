@@ -17,7 +17,7 @@
 			</div>
 			<% if (blog) { %>
 				<% var count = 0; %>
-				<% maxDisplay = 9; if(blog.length == 0) {maxDisplay = 0}; %>
+				<% maxDisplay = 9; if(blog.length == 0) {maxDisplay = 0}; if(blog.length > 0 && blog.length <= 9) {maxDisplay = blog.length} %>
 				<% for(var i = 0; i < maxDisplay; i++) { %>
 					<% var blogPost = blog[i]; %>
 					<% if (count == 3) {count = 0} %>

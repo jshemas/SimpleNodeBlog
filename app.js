@@ -2,10 +2,11 @@ var express = require('express'),
 	engine = require('ejs-locals'),
 	app = express(),
 	MemoryStore = require('connect').session.MemoryStore,
-	dbPath = 'mongodb://localhost/something',
+	dbPath = 'mongodb://localhost/something1',
 	mongoose = require('mongoose'),
 	email = require("emailjs/email"),
-	winston = require('winston');
+	winston = require('winston'),
+	argv = require('optimist').argv;
 
 // set up the logger
 winston.add(winston.transports.File, { filename: 'infoLog.log' });
@@ -42,6 +43,13 @@ app.configure(function() {
 
 // set routes
 var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, config);
+
+// if this is first time running this app
+// add some blog post and comments
+if (argv.s) {
+	console.log("Running Blog for the first time!");
+	Blog.firstRunBlogPost();
+};
 
 // run on port 8080
 app.listen(8080);

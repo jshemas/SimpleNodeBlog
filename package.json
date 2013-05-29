@@ -1,7 +1,7 @@
 {
 	"name": "Simple-Node-Blog",
 	"description": "A simple blog wrote in NodeJS.",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"author": {
 		"name": "Josh Shemas"
 	},
@@ -12,6 +12,7 @@
 		"mongoose": "3.6.9",
 		"connect": "2.7.9",
 		"emailjs": "0.3.4",
-		"winston": "0.7.1"
+		"winston": "0.7.1",
+		"optimist": "0.5.0"
 	}
 }
