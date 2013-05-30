@@ -10,10 +10,23 @@ You need to have Node.js(v0.8.16) and MongoDB(v2.2.2) running.
 
 ```
 npm install
+// for first time running use
+node app -s
+// otherwise use
 node app
 ```
 
 You'll also have to set a config.js, I have included an example.
+
+### Tests
+You have to have jasmine-node running. To install it run...
+```
+npm install jasmine-node -g
+```
+Then you can run the tests by turning on the server and run...
+```
+jasmine-node spec/
+```
 
 ## License
 
