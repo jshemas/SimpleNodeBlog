@@ -259,4 +259,20 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			res.send(200);
 		});
 	});
+
+	/*
+	* The 404 Route - Page Not Found
+	*/
+	app.use(function(req, res, next){
+		//Log this?
+		res.render('404', { status: 404, url: req.url });
+	});
+
+	/*
+	* The 500 Route - Server Error
+	*/
+	app.use(function(err, req, res, next){
+		//Log this?
+		res.render('500', {status: err.status || 500, error: err});
+	});
 };
