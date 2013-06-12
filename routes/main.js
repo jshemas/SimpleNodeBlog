@@ -265,6 +265,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	*/
 	app.use(function(req, res, next){
 		//Log this?
+		res.status(404);
 		res.render('404', { status: 404, url: req.url });
 	});
 
@@ -273,6 +274,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	*/
 	app.use(function(err, req, res, next){
 		//Log this?
+		res.status(500);
 		res.render('500', {status: err.status || 500, error: err});
 	});
 };
