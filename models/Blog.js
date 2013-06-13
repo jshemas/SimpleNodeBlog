@@ -1,5 +1,4 @@
 module.exports = function(mongoose, winston) {
-	//TODO - store comment email
 	var Comment = new mongoose.Schema({
 		author: { type: String, required: true },
 		body: { type: String, required: true }
@@ -34,6 +33,26 @@ module.exports = function(mongoose, winston) {
 			} else{
 				callback(results);
 			};
+		});
+	};
+
+	// this posts the comment
+	var commentPost = function(displayName, comment, blogPostID, callback) {
+		//find blog 
+		getSingleBlogPost(blogPostID, function(blog) {
+			comment = {
+				author: displayName,
+				body: comment
+			};
+			//add comment
+			blog.comment.push(comment);
+			blog.save( function(err, results){
+				if(err){ //log error?
+					callback();
+				} else{
+					callback(results);
+				};
+			});
 		});
 	};
 
@@ -123,6 +142,7 @@ module.exports = function(mongoose, winston) {
 	return {
 		Blog: Blog,
 		blogPost: blogPost,
+		commentPost: commentPost,
 		getBlogPost: getBlogPost,
 		getSingleBlogPost: getSingleBlogPost,
 		blogEditPost: blogEditPost,

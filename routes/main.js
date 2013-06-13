@@ -217,28 +217,22 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			comment = req.param('comment', ''),
 			name = req.param('name', ''),
 			blogPostID = req.param('blogPostID', '');
+		if(validateVar(email)) {res.send(400); return;};
+		if(validateVar(comment)) {res.send(400); return;};
+		if(validateVar(name)) {res.send(400); return;};
+		if(validateVar(blogPostID)) {res.send(400); return;};
 		User.register(email,name, function(account) {
 			//found the account
 			if(account){
 				//must have comment and blogID
-				if(validateVar(comment)) {res.send(400); return;};
-				if(validateVar(blogPostID)) {res.send(400); return;};
-				//this needs to be moved to Blog.js
-				//find blog 
-				Blog.getSingleBlogPost(blogPostID, function(blog) {
-					comment = {
-						author: account.displayName,
-						body: comment
+				Blog.commentPost(account.displayName, comment, blogPostID, function(results) {
+					//return blogID
+					if(results && results.id){
+						res.json({ 'commentID': results.id });
+					} else {
+						res.json({ 'commentID': '000000' });
 					};
-					//add comment
-					blog.comment.push(comment);
-					blog.save(function (err) {
-						if (err) {
-							//console.log('error saving comment: ' + err);
-						}
-					});
 				});
-				res.send(200);
 			} else {
 				res.send(400);
 			}

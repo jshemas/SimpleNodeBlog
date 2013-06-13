@@ -208,43 +208,40 @@ describe('POST - Adding Comments:', function (done) {
 				done();
 			});
 	});
+	it('invalid user comment - no email', function(done) {
+		request(baseURL)
+			.post('postCommentNow?comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('invalid user comment - no comment', function(done) {
+		request(baseURL)
+			.post('postCommentNow?name='+commentName+'&blogPostID='+blogID+'&email='+commentEmail)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('invalid user comment - no name', function(done) {
+		request(baseURL)
+			.post('postCommentNow?comment='+commentBody+'&blogPostID='+blogID+'&email='+commentEmail)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('invalid user comment - no blogID', function(done) {
+		request(baseURL)
+			.post('postCommentNow?comment='+commentBody+'&name='+commentName+'&email='+commentEmail)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
 });
-
-
-	// /*
-	//  * POST A Comment - From Single Blog Page
-	//  */
-	// app.post('/postCommentNow', function(req, res){
-	// 	var email = req.param('email', ''),
-	// 		comment = req.param('comment', ''),
-	// 		name = req.param('name', ''),
-	// 		blogPostID = req.param('blogPostID', '');
-	// 	User.register(email,name, function(account) {
-	// 		//found the account
-	// 		if(account){
-	// 			//must have comment and blogID
-	// 			if(validateVar(comment)) {res.send(400); return;};
-	// 			if(validateVar(blogPostID)) {res.send(400); return;};
-	// 			//this needs to be moved to Blog.js
-	// 			//find blog 
-	// 			Blog.getSingleBlogPost(blogPostID, function(blog) {
-	// 				comment = {
-	// 					author: account.displayName,
-	// 					body: comment
-	// 				};
-	// 				//add comment
-	// 				blog.comment.push(comment);
-	// 				blog.save(function (err) {
-	// 					if (err) {
-	// 						//console.log('error saving comment: ' + err);
-	// 					}
-	// 				});
-	// 			});
-	// 			res.send(200);
-	// 		} else {
-	// 			res.send(400);
-	// 		}
-	// 	});
-	// });
-
-
