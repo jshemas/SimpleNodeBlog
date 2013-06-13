@@ -19,7 +19,7 @@ module.exports = function(mongoose, winston) {
 	var Blog = mongoose.model('Blog', blogPostSchema);
 
 	// this posts the blog entry
-	var blogPost = function(title, subTitle, tags, body, user) {
+	var blogPost = function(title, subTitle, tags, body, user, callback) {
 		var blogPost = new Blog({
 			title: title,
 			subTitle: subTitle,
@@ -29,7 +29,11 @@ module.exports = function(mongoose, winston) {
 		});
 		// make that blog post!
 		blogPost.save( function(err, results){
-			// should we log err?
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
 		});
 	};
 

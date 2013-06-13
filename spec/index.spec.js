@@ -1,12 +1,37 @@
-var request = require('supertest');
+var request = require('supertest'),
+	expect = require('expect.js');
 console.log("Starting Tests");
 
 //enter your domain
 var baseURL = "http://localhost:8080/";
 
-//enter your admin account
-var adminName = "email";
-var adminPassword = "password";
+//admin login info
+var adminName = 'email',
+	adminPassword = 'password';
+
+//store the admin login cookie
+var cookie;
+
+//this will be info for the admin blog post
+var title = 'Auto Test - Title',
+	subTitle = 'Auto Test - subTitle',
+	tags = 'Auto Test - Tags',
+	body = 'Auto Test - Body';
+
+//store that blog post we made
+var blogID;
+
+//this will be info for the test comment
+var commentEmail = 'AutoTest@AutoTest.com',
+	commentBody = 'Auto Test - Comment Body',
+	commentName = 'Auto Test - Comment Name';
+
+//sometimes error don't show in the log...
+//http://stackoverflow.com/questions/8794008/no-stack-trace-for-jasmine-node-errors
+process.on('uncaughtException',function(e) {
+	console.log("Caught unhandled exception: " + e);
+	console.log(" ---> : " + e.stack);
+});
 
 describe('GET - Load Static Pages:', function (done) {
 	it('Hompage', function(done) {
@@ -14,7 +39,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
@@ -23,7 +48,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('bloglist')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
@@ -32,7 +57,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('about')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
@@ -41,7 +66,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('contact')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
@@ -50,7 +75,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('login')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
@@ -59,7 +84,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.get('admin')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(302);
+				expect(result.res.statusCode).to.be(302);
 				done();
 			});
 	});
@@ -69,7 +94,7 @@ describe('GET - Load Static Pages:', function (done) {
 			.end( function(err, result) {
 				// response from our service
 				// this is just testing if we send a 404 code back
-				expect(result.res.statusCode).toBe(404);
+				expect(result.res.statusCode).to.be(404);
 				done();
 			});
 	});
@@ -81,7 +106,25 @@ describe('POST - Admin Login:', function (done) {
 			.post('userlogin?email=test&password=test')
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(401);
+				expect(result.res.statusCode).to.be(401);
+				done();
+			});
+	});
+	it('bad login info - no email', function(done) {
+		request(baseURL)
+			.post('userlogin?password=test')
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('bad login info - no password', function(done) {
+		request(baseURL)
+			.post('userlogin?email=test')
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
 				done();
 			});
 	});
@@ -90,8 +133,118 @@ describe('POST - Admin Login:', function (done) {
 			.post('userlogin?email='+adminName+'&password='+adminPassword)
 			.end( function(err, result) {
 				// response from our service
-				expect(result.res.statusCode).toBe(200);
+				expect(result.res.statusCode).to.be(200);
+				cookie = result.headers['set-cookie'].pop().split(';')[0];
+				done();
+			});
+	});
+	it('Admin login confirm', function(done) {
+		var testRequest = request(baseURL).get('admin');
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
 				done();
 			});
 	});
 });
+
+describe('POST - Admin Blog Post:', function (done) {
+	it('Valid Admin Blog Post', function(done) {
+		var testRequest = request(baseURL).post('postBlogNow?title='+title+'&body='+body+'&subTitle='+subTitle+'&tags='+tags);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				blogID = result.body.blogID;
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Valid Single Post Page', function(done) {
+		request(baseURL)
+			.get('blog/'+blogID)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Invalid Admin Blog Post - no title', function(done) {
+		var testRequest = request(baseURL).post('postBlogNow?'+'body='+body+'&subTitle='+subTitle+'&tags='+tags);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Blog Post - no body', function(done) {
+		var testRequest = request(baseURL).post('postBlogNow?title='+title+'&subTitle='+subTitle+'&tags='+tags);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Blog Post - not login', function(done) {
+		var testRequest = request(baseURL).post('postBlogNow?title='+title+'&subTitle='+subTitle+'&tags='+tags);
+		testRequest.cookies = '';
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+});
+
+describe('POST - Adding Comments:', function (done) {
+	it('valid user comment', function(done) {
+		request(baseURL)
+			.post('postCommentNow?email='+commentEmail+'&comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+});
+
+
+	// /*
+	//  * POST A Comment - From Single Blog Page
+	//  */
+	// app.post('/postCommentNow', function(req, res){
+	// 	var email = req.param('email', ''),
+	// 		comment = req.param('comment', ''),
+	// 		name = req.param('name', ''),
+	// 		blogPostID = req.param('blogPostID', '');
+	// 	User.register(email,name, function(account) {
+	// 		//found the account
+	// 		if(account){
+	// 			//must have comment and blogID
+	// 			if(validateVar(comment)) {res.send(400); return;};
+	// 			if(validateVar(blogPostID)) {res.send(400); return;};
+	// 			//this needs to be moved to Blog.js
+	// 			//find blog 
+	// 			Blog.getSingleBlogPost(blogPostID, function(blog) {
+	// 				comment = {
+	// 					author: account.displayName,
+	// 					body: comment
+	// 				};
+	// 				//add comment
+	// 				blog.comment.push(comment);
+	// 				blog.save(function (err) {
+	// 					if (err) {
+	// 						//console.log('error saving comment: ' + err);
+	// 					}
+	// 				});
+	// 			});
+	// 			res.send(200);
+	// 		} else {
+	// 			res.send(400);
+	// 		}
+	// 	});
+	// });
+
+

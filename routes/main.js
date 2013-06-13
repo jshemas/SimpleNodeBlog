@@ -66,12 +66,12 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			body = req.param('editBody', ''),
 			blogID = req.param('theBlogID', '');
 		//must have title and body
-		if(validateVar(title)) res.send(400);
-		if(validateVar(body)) res.send(400);
+		if(validateVar(title)) {res.send(400); return;};
+		if(validateVar(body)) {res.send(400); return;};
 		//must have a ID
-		if(validateVar(blogID)) res.send(400);
+		if(validateVar(blogID)) {res.send(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) res.send(400);
+		if (req.session.loggedIn != true) {res.send(400); return;};
 		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID); //go to blogEditPost in models
 		res.send(200);
 	});
@@ -82,9 +82,9 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	app.post('/admin/deleteBlogNow', function(req, res){
 		var blogID = req.param('theBlogID', '');
 		//must have a ID
-		if(validateVar(blogID)) res.send(400);
+		if(validateVar(blogID)) {res.send(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) res.send(400);
+		if (req.session.loggedIn != true) {res.send(400); return;};
 		Blog.blogDeletePost(blogID); //go to blogDeletePost in models
 		res.send(200);
 	});
@@ -98,13 +98,13 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			blogID = req.param('theBlogID', '');
 			commentID = req.param('theCommentID', '');
 		//must have author and body
-		if(validateVar(author)) res.send(400);
-		if(validateVar(body)) res.send(400);
+		if(validateVar(author)) {res.send(400); return;};
+		if(validateVar(body)) {res.send(400); return;};
 		//must have a ID
-		if(validateVar(blogID)) res.send(400);
-		if(validateVar(commentID)) res.send(400);
+		if(validateVar(blogID)) {res.send(400); return;};
+		if(validateVar(commentID)) {res.send(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) res.send(400);
+		if (req.session.loggedIn != true) {res.send(400); return;};
 		Blog.blogEditComment(author, body, req.session.displayName, commentID, blogID); //go to blogEditComment in models
 		res.send(200);
 	});
@@ -116,10 +116,10 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		var blogID = req.param('theBlogID', '');
 			commentID = req.param('theCommentID', '');
 		//must have a ID
-		if(validateVar(blogID)) res.send(400);
-		if(validateVar(commentID)) res.send(400);
+		if(validateVar(blogID)) {res.send(400); return;};
+		if(validateVar(commentID)) {res.send(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) res.send(400);
+		if (req.session.loggedIn != true) {res.send(400); return;};
 		Blog.blogDeleteComment(commentID, blogID); //go to blogDeleteComment in models
 		res.send(200);
 	});
@@ -138,8 +138,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		var email = req.param('email', ''),
 			password = req.param('password', '');
 		//is email and password set?
-		if(validateVar(email)) res.send(400);
-		if(validateVar(password)) res.send(400);
+		if(validateVar(email)) {res.send(400); return;};
+		if(validateVar(password)) {res.send(400); return;};
 		// try to login
 		User.login(email, password, function(account) {
 			if (!account) {
@@ -194,12 +194,19 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			tags = req.param('tags', ''),
 			body = req.param('body', '');
 		//must have title and body
-		if(validateVar(title)) res.send(400);
-		if(validateVar(body)) res.send(400);
+
+		if(validateVar(title)) {res.send(400); return;};
+		if(validateVar(body)) {res.send(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) res.send(400);
-		Blog.blogPost(title, subTitle, tags, body, req.session.displayName); //go to blogPost in models
-		res.send(200);
+		if (req.session.loggedIn != true) {res.send(400); return;};
+		Blog.blogPost(title, subTitle, tags, body, req.session.displayName, function(blog) {
+			//return blogID
+			if(blog && blog.id){
+				res.json({ 'blogID': blog.id });
+			} else {
+				res.json({ 'blogID': '000000' });
+			};
+		});
 	});
 
 	/*
@@ -214,8 +221,8 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			//found the account
 			if(account){
 				//must have comment and blogID
-				if(validateVar(comment)) res.send(400);
-				if(validateVar(blogPostID)) res.send(400);
+				if(validateVar(comment)) {res.send(400); return;};
+				if(validateVar(blogPostID)) {res.send(400); return;};
 				//this needs to be moved to Blog.js
 				//find blog 
 				Blog.getSingleBlogPost(blogPostID, function(blog) {
