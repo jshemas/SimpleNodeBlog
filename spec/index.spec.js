@@ -21,10 +21,16 @@ var title = 'Auto Test - Title',
 //store that blog post we made
 var blogID;
 
+//store that comment we made
+var CommentID;
+
 //this will be info for the test comment
 var commentEmail = 'AutoTest@AutoTest.com',
 	commentBody = 'Auto Test - Comment Body',
 	commentName = 'Auto Test - Comment Name';
+
+//append this to edit posts
+var edit = '[EDIT]';
 
 //sometimes error don't show in the log...
 //http://stackoverflow.com/questions/8794008/no-stack-trace-for-jasmine-node-errors
@@ -204,6 +210,7 @@ describe('POST - Adding Comments:', function (done) {
 			.post('postCommentNow?email='+commentEmail+'&comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
 			.end( function(err, result) {
 				// response from our service
+				commentID = result.body.commentID;
 				expect(result.res.statusCode).to.be(200);
 				done();
 			});
@@ -245,3 +252,154 @@ describe('POST - Adding Comments:', function (done) {
 			});
 	});
 });
+
+describe('POST - Edit Blog Post:', function (done) {
+	it('Valid Admin Edit Blog Post', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+'&editTitle='+title+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - invalid blogID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+edit+'&editTitle='+title+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - no blogID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?editTitle='+title+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - no title', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - no body', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+edit+'&editTitle='+title+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - no subTitle', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+edit+'&editTitle='+title+edit+'&editBody='+body+edit+'&editTags='+tags+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - no tags', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+edit+'&editTitle='+title+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Post - not login', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogNow?theBlogID='+blogID+'&editTitle='+title+edit+'&editBody='+body+edit+'&editSubTitle='+subTitle+edit+'&editTags='+tags+edit);
+		testRequest.cookies = '';
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+});
+
+describe('POST - Edit Blog Post Comments:', function (done) {
+	it('Valid Admin Edit Blog Comment', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - invalid blogID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+edit+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - invalid commentID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+edit+'&theBlogID='+blogID+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - no blogID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - no commentID', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theBlogID='+blogID+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - no comment', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+'&editAuthor='+commentName+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Comment - no name', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+'&editBody='+commentBody+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Edit Blog Commen- not login', function(done) {
+		var testRequest = request(baseURL).post('admin/editBlogCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+'&editAuthor='+commentName+edit+'&editBody='+commentBody+edit);
+		testRequest.cookies = '';
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+});	
+

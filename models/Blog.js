@@ -83,7 +83,7 @@ module.exports = function(mongoose, winston) {
 	};
 
 	// edit that blog post!
-	var blogEditPost = function(title, subTitle, tags, body, user, blogID){
+	var blogEditPost = function(title, subTitle, tags, body, user, blogID, callback){
 		var blogUpdate = { $set: { 
 			title: title,
 			subTitle: subTitle,
@@ -92,7 +92,12 @@ module.exports = function(mongoose, winston) {
 			author: user
 		}};
 		Blog.update({_id:blogID},blogUpdate,{upsert: true}, function(err, results){ 
-			// should we log err?
+			// Check for an error   
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
 		});
 	};
 
@@ -103,14 +108,19 @@ module.exports = function(mongoose, winston) {
 	};
 
 	// edit that blog comment!
-	var blogEditComment = function(author, body, user, theCommentID, blogID){
+	var blogEditComment = function(author, body, user, theCommentID, blogID, callback){
 		// maybe we should log when this is edited
 		var commentUpdate = { $set: { 
 			'comment.$.body': body,
 			'comment.$.author': author
 		}};
 		Blog.update({_id:blogID, 'comment._id':theCommentID},commentUpdate,{upsert: true}, function(err, results){ 
-			// should we log err?
+			// Check for an error
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
 		});
 	};
 

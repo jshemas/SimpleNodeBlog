@@ -72,8 +72,13 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		if(validateVar(blogID)) {res.send(400); return;};
 		//must be logged in
 		if (req.session.loggedIn != true) {res.send(400); return;};
-		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID); //go to blogEditPost in models
-		res.send(200);
+		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID, function(results) {
+			if(results == 1){
+				res.send(200);
+			} else {
+				res.send(400);
+			};
+		});
 	});
 
 	/*
@@ -105,8 +110,13 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		if(validateVar(commentID)) {res.send(400); return;};
 		//must be logged in
 		if (req.session.loggedIn != true) {res.send(400); return;};
-		Blog.blogEditComment(author, body, req.session.displayName, commentID, blogID); //go to blogEditComment in models
-		res.send(200);
+		Blog.blogEditComment(author, body, req.session.displayName, commentID, blogID, function(results) {
+			if(results == 1){
+				res.send(200);
+			} else {
+				res.send(400);
+			};
+		});
 	});
 	
 	/*
@@ -204,7 +214,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			if(blog && blog.id){
 				res.json({ 'blogID': blog.id });
 			} else {
-				res.json({ 'blogID': '000000' });
+				res.send(400);
 			};
 		});
 	});
@@ -227,10 +237,12 @@ module.exports = function(app, Blog, User, mongoose, config) {
 				//must have comment and blogID
 				Blog.commentPost(account.displayName, comment, blogPostID, function(results) {
 					//return blogID
-					if(results && results.id){
-						res.json({ 'commentID': results.id });
+					if(results && results.comment){
+						//this need reworked, only looks at first comment
+						var commentObj = results.comment;
+						res.json({ 'commentID': commentObj[0].id });
 					} else {
-						res.json({ 'commentID': '000000' });
+						res.send(400);
 					};
 				});
 			} else {
