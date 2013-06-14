@@ -28,7 +28,8 @@ module.exports = function(mongoose, winston) {
 		});
 		// make that blog post!
 		blogPost.save( function(err, results){
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in blogPost:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -47,7 +48,8 @@ module.exports = function(mongoose, winston) {
 			//add comment
 			blog.comment.push(comment);
 			blog.save( function(err, results){
-				if(err){ //log error?
+				if(err){
+					winston.info('Error in commentPost:'+err);
 					callback();
 				} else {
 					callback(results);
@@ -62,7 +64,8 @@ module.exports = function(mongoose, winston) {
 		query.select('title subTitle tags body _id createdDate');
 		//execute the query at a later time
 		query.exec(function (err, results) {
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in getBlogPost:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -72,12 +75,11 @@ module.exports = function(mongoose, winston) {
 
 	// gets one blog entry (note the id pased to it)
 	var getSingleBlogPost = function(id, callback) {
-		winston.info('Loading Blod ID:'+id);
 		var query = Blog.findOne({_id: id});
 		query.select('title subTitle body tags author createdDate comment');
 		query.exec(function(err, results){
-			// Check for an error   
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in getSingleBlogPost:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -95,8 +97,8 @@ module.exports = function(mongoose, winston) {
 			author: user
 		}};
 		Blog.update({_id:blogID},blogUpdate,{upsert: true}, function(err, results){ 
-			// Check for an error   
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in blogEditPost:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -107,8 +109,8 @@ module.exports = function(mongoose, winston) {
 	//  delete that blog post!
 	var blogDeletePost = function(blogID, callback){
 		Blog.find({_id:blogID}).remove(function(err, results){
-			// Check for an error
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in blogDeletePost:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -124,8 +126,8 @@ module.exports = function(mongoose, winston) {
 			'comment.$.author': author
 		}};
 		Blog.update({_id:blogID, 'comment._id':theCommentID},commentUpdate,{upsert: true}, function(err, results){ 
-			// Check for an error
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in blogEditComment:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -139,8 +141,8 @@ module.exports = function(mongoose, winston) {
 			comment:{_id:theCommentID}
 		}};
 		Blog.update({_id:blogID},commentUpdate, function(err, results){ 
-			// Check for an error
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in blogDeleteComment:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -159,7 +161,9 @@ module.exports = function(mongoose, winston) {
 		});
 		// make that blog post!
 		testPost.save( function(err, results){
-			// should we log err?
+			if(err){
+				winston.info('Error in firstRunBlogPost:'+err);
+			};
 		});
 	}
 

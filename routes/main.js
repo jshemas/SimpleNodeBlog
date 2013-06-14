@@ -290,12 +290,10 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			to: config.emailAccount,
 			subject: "Simple Node Blog"
 		}, function(err, results) { 
-			// Check for an error
-			if(err){ //log error?
-				//console.log('err',err);
+			if(err){
+				winston.info('Error in emailme:'+err);
 				res.send(400);
 			} else {
-				//console.log('results',results);
 				res.send(200);
 			};
 		});

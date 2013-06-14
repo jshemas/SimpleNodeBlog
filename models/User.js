@@ -13,8 +13,8 @@ module.exports = function(mongoose, winston) {
 	var findByEmail = function(email, callback) {
 		winston.info('Looking up Email:'+email);
 		Account.findOne({email:email}, function(err,results) {
-			// Check for an error
-			if(err){ //log error?
+			if(err){
+				winston.info('Error in findByEmail:'+err);
 				callback();
 			} else {
 				callback(results);
@@ -28,8 +28,10 @@ module.exports = function(mongoose, winston) {
 		Account.findOne({email:email,password:password},function(err,results){
 			//only admins can log in
 			if(results && results.isAdmin && results.isAdmin == true){
+				winston.info('Admin login:'+results);
 				callback(results);
 			} else {
+				winston.info('Error in login:'+err);
 				callback();
 			}
 		});
@@ -49,8 +51,12 @@ module.exports = function(mongoose, winston) {
 
 				// make that user!
 				user.save( function(err, results){
-					// should we log err?
-					callback(results);
+					if(err){
+						winston.info('Error in register:'+err);
+						callback();
+					} else {
+						callback(results);
+					};
 				});
 			} else {
 				// return member doc
@@ -69,7 +75,9 @@ module.exports = function(mongoose, winston) {
 		});
 		// make that user!
 		testAccount.save( function(err, results){
-			// should we log err?
+			if(err){
+				winston.info('Error in firstRunBlogPost:'+err);
+			};
 		});
 	}
 
