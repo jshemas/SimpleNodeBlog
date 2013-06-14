@@ -90,8 +90,13 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		if(validateVar(blogID)) {res.send(400); return;};
 		//must be logged in
 		if (req.session.loggedIn != true) {res.send(400); return;};
-		Blog.blogDeletePost(blogID); //go to blogDeletePost in models
-		res.send(200);
+		Blog.blogDeletePost(blogID, function(results) {
+			if(results == 1){
+				res.send(200);
+			} else {
+				res.send(400);
+			};
+		});
 	});
 
 	/*
@@ -130,8 +135,13 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		if(validateVar(commentID)) {res.send(400); return;};
 		//must be logged in
 		if (req.session.loggedIn != true) {res.send(400); return;};
-		Blog.blogDeleteComment(commentID, blogID); //go to blogDeleteComment in models
-		res.send(200);
+		Blog.blogDeleteComment(commentID, blogID, function(results) {
+			if(results == 1){
+				res.send(200);
+			} else {
+				res.send(400);
+			};
+		});
 	});
 
 	/*

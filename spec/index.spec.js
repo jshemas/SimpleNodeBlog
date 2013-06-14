@@ -401,5 +401,118 @@ describe('POST - Edit Blog Post Comments:', function (done) {
 				done();
 			});
 	});
-});	
+});
 
+describe('POST - Delete Blog Post Comment:', function (done) {
+	it('Invalid Admin Delete Blog Comment - not login', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID+'&theBlogID='+blogID);
+		testRequest.cookies = '';
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Comment - bad blod ID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID+'&theBlogID='+blogID+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Comment - bad comment ID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID+edit+'&theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Comment - no blogID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Comment - no commentID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Valid Admin Delete Blog Comment', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID+'&theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+});
+
+describe('POST - Delete Blog Post Comment:', function (done) {
+	it('Invalid Admin Delete Blog Post - not login', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteBlogNow?theBlogID='+blogID);
+		testRequest.cookies = '';
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Post - no blog ID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteBlogNow');
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Admin Delete Blog Post - bad blog ID', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteBlogNow?theBlogID='+blogID+edit);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Valid Admin Delete Blog Post', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteBlogNow?theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+});
+
+	// /*
+	//  * POST Admin Page - Delete Blog Post
+	//  */
+	// app.post('/admin/deleteBlogNow', function(req, res){
+	// 	var blogID = req.param('theBlogID', '');
+	// 	//must have a ID
+	// 	if(validateVar(blogID)) {res.send(400); return;};
+	// 	//must be logged in
+	// 	if (req.session.loggedIn != true) {res.send(400); return;};
+	// 	Blog.blogDeletePost(blogID, function(results) {
+	// 		if(results == 1){
+	// 			res.send(200);
+	// 		} else {
+	// 			res.send(400);
+	// 		};
+	// 	});
+	// });

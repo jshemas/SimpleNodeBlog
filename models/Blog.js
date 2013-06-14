@@ -102,9 +102,15 @@ module.exports = function(mongoose, winston) {
 	};
 
 	//  delete that blog post!
-	var blogDeletePost = function(blogID){
-		Blog.find({_id:blogID}).remove();
-		//log this?
+	var blogDeletePost = function(blogID, callback){
+		Blog.find({_id:blogID}).remove(function(err, results){
+			// Check for an error
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
+		});
 	};
 
 	// edit that blog comment!
@@ -125,12 +131,17 @@ module.exports = function(mongoose, winston) {
 	};
 
 	// delete that blog comment!
-	var blogDeleteComment = function(theCommentID, blogID){
+	var blogDeleteComment = function(theCommentID, blogID, callback){
 		var commentUpdate = { $pull: { 
 			comment:{_id:theCommentID}
 		}};
 		Blog.update({_id:blogID},commentUpdate, function(err, results){ 
-			// should we log err?
+			// Check for an error
+			if(err){ //log error?
+				callback();
+			} else{
+				callback(results);
+			};
 		});
 	};
 
