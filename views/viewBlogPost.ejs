@@ -74,7 +74,7 @@
 					url: '/postCommentNow',
 					data: $("#postCommentForm").serialize(),
 					success: function(data) {
-						if (data == "OK") {
+						if (data.commentID) {
 							//comment was made, go to homepage
 							window.location = window.location;
 						};

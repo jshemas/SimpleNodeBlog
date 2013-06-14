@@ -110,6 +110,10 @@ $(document).ready(function() {
 				data: $("#postBlogForm").serialize(),
 				success: function(data) {
 					$('#postDiv').addClass('displayNone');
+					if (data.blogID) {
+						//blog was made, go to it
+						window.location = '/blog/'+data.blogID;
+					};
 				}
 			});
 		} else {
