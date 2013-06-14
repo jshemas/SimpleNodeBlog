@@ -1,4 +1,4 @@
-module.exports = function(app, Blog, User, mongoose, config) {
+module.exports = function(app, Blog, User, mongoose, config, winston) {
 
 	// define utils
 	var validateVar = require('./utils.js').validateVar;
@@ -314,6 +314,7 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	app.use(function(err, req, res, next){
 		//Log this?
 		res.status(500);
+		winston.info('[500]ERROR:'+err);
 		res.render('500', {status: err.status || 500, error: err});
 	});
 };

@@ -42,7 +42,7 @@ app.configure(function() {
 });
 
 // set routes
-var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, config);
+var routes = require(__dirname + '/routes/main.js')(app, Blog, User, mongoose, config, winston);
 
 // if this is first time running this app
 // add some blog post and comments
