@@ -12,18 +12,23 @@ module.exports = function(mongoose, winston) {
 	//look up users by email
 	var findByEmail = function(email, callback) {
 		winston.info('Looking up Email:'+email);
-		Account.findOne({email:email}, function(err,doc) {
-			callback(doc);
+		Account.findOne({email:email}, function(err,results) {
+			// Check for an error
+			if(err){ //log error?
+				callback();
+			} else {
+				callback(results);
+			};
 		});
 	};
 	
 	//login page - used by admin
 	var login = function(email, password, callback) {
 		winston.info('Login on account:'+email);
-		Account.findOne({email:email,password:password},function(err,doc){
+		Account.findOne({email:email,password:password},function(err,results){
 			//only admins can log in
-			if(doc && doc.isAdmin && doc.isAdmin == true){
-				callback(doc);
+			if(results && results.isAdmin && results.isAdmin == true){
+				callback(results);
 			} else {
 				callback();
 			}

@@ -21,8 +21,8 @@ var title = 'Auto Test - Title',
 //store that blog post we made
 var blogID;
 
-//store that comment we made
-var CommentID;
+//store that comments we made
+var CommentID, CommentID2, CommentID3;
 
 //this will be info for the test comment
 var commentEmail = 'AutoTest@AutoTest.com',
@@ -166,15 +166,6 @@ describe('POST - Admin Blog Post:', function (done) {
 				done();
 			});
 	});
-	it('Valid Single Post Page', function(done) {
-		request(baseURL)
-			.get('blog/'+blogID)
-			.end( function(err, result) {
-				// response from our service
-				expect(result.res.statusCode).to.be(200);
-				done();
-			});
-	});
 	it('Invalid Admin Blog Post - no title', function(done) {
 		var testRequest = request(baseURL).post('postBlogNow?'+'body='+body+'&subTitle='+subTitle+'&tags='+tags);
 		testRequest.cookies = cookie;
@@ -205,7 +196,7 @@ describe('POST - Admin Blog Post:', function (done) {
 });
 
 describe('POST - Adding Comments:', function (done) {
-	it('valid user comment', function(done) {
+	it('Valid user comment', function(done) {
 		request(baseURL)
 			.post('postCommentNow?email='+commentEmail+'&comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
 			.end( function(err, result) {
@@ -215,7 +206,27 @@ describe('POST - Adding Comments:', function (done) {
 				done();
 			});
 	});
-	it('invalid user comment - no email', function(done) {
+	it('Valid same user posts a comment', function(done) {
+		request(baseURL)
+			.post('postCommentNow?email='+commentEmail+'&comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
+			.end( function(err, result) {
+				// response from our service
+				commentID2 = result.body.commentID;
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Valid some other user posts a comment', function(done) {
+		request(baseURL)
+			.post('postCommentNow?email='+commentEmail+edit+'&comment='+commentBody+edit+'&name='+commentName+edit+'&blogPostID='+blogID)
+			.end( function(err, result) {
+				// response from our service
+				commentID3 = result.body.commentID;
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Invalid user comment - no email', function(done) {
 		request(baseURL)
 			.post('postCommentNow?comment='+commentBody+'&name='+commentName+'&blogPostID='+blogID)
 			.end( function(err, result) {
@@ -224,7 +235,7 @@ describe('POST - Adding Comments:', function (done) {
 				done();
 			});
 	});
-	it('invalid user comment - no comment', function(done) {
+	it('Invalid user comment - no comment', function(done) {
 		request(baseURL)
 			.post('postCommentNow?name='+commentName+'&blogPostID='+blogID+'&email='+commentEmail)
 			.end( function(err, result) {
@@ -233,7 +244,7 @@ describe('POST - Adding Comments:', function (done) {
 				done();
 			});
 	});
-	it('invalid user comment - no name', function(done) {
+	it('Invalid user comment - no name', function(done) {
 		request(baseURL)
 			.post('postCommentNow?comment='+commentBody+'&blogPostID='+blogID+'&email='+commentEmail)
 			.end( function(err, result) {
@@ -242,12 +253,39 @@ describe('POST - Adding Comments:', function (done) {
 				done();
 			});
 	});
-	it('invalid user comment - no blogID', function(done) {
+	it('Invalid user comment - no blogID', function(done) {
 		request(baseURL)
 			.post('postCommentNow?comment='+commentBody+'&name='+commentName+'&email='+commentEmail)
 			.end( function(err, result) {
 				// response from our service
 				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+});
+
+describe('GET - Pages with Blog Content:', function (done) {
+	it('Valid Single Post Page', function(done) {
+		request(baseURL)
+			.get('blog/'+blogID)
+			.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Valid JSON Response of Blog Posts - Should see test post', function(done) {
+		request(baseURL)
+			.get('blogJSON')
+			.end( function(err, result) {
+				// response from our service
+				var bool = 0;
+				for (var i = 0; i <= result.body.length-1; i++) {
+					if (result.body[i]._id == blogID) {
+						bool = 1;
+					};
+				};
+				expect(bool).to.be(1);
 				done();
 			});
 	});
@@ -458,6 +496,24 @@ describe('POST - Delete Blog Post Comment:', function (done) {
 				done();
 			});
 	});
+	it('Valid Admin Delete Blog Comment2', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID2+'&theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Valid Admin Delete Blog Comment3', function(done) {
+		var testRequest = request(baseURL).post('admin/deleteCommentNow?theCommentID='+commentID3+'&theBlogID='+blogID);
+		testRequest.cookies = cookie;
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
 });
 
 describe('POST - Delete Blog Post Comment:', function (done) {
@@ -497,22 +553,55 @@ describe('POST - Delete Blog Post Comment:', function (done) {
 				done();
 			});
 	});
+	it('Valid JSON Response of Blog Posts - Should not see test post', function(done) {
+		request(baseURL)
+			.get('blogJSON')
+			.end( function(err, result) {
+				// response from our service
+				var bool = 0;
+				for (var i = 0; i <= result.body.length-1; i++) {
+					if (result.body[i]._id == blogID) {
+						bool = 1;
+					};
+				};
+				expect(bool).to.be(0);
+				done();
+			});
+	});
 });
 
-	// /*
-	//  * POST Admin Page - Delete Blog Post
-	//  */
-	// app.post('/admin/deleteBlogNow', function(req, res){
-	// 	var blogID = req.param('theBlogID', '');
-	// 	//must have a ID
-	// 	if(validateVar(blogID)) {res.send(400); return;};
-	// 	//must be logged in
-	// 	if (req.session.loggedIn != true) {res.send(400); return;};
-	// 	Blog.blogDeletePost(blogID, function(results) {
-	// 		if(results == 1){
-	// 			res.send(200);
-	// 		} else {
-	// 			res.send(400);
-	// 		};
-	// 	});
-	// });
+describe('POST - Email Me:', function (done) {
+	//this test might fail if you don't have a real emmail in the config.js
+	it('Valid Email Me', function(done) {
+		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody+'&name='+commentName);
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(200);
+				done();
+			});
+	});
+	it('Invalid Email Me - no name', function(done) {
+		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody);
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Email Me - no email', function(done) {
+		var testRequest = request(baseURL).post('emailme?message='+commentBody+'&name='+commentName);
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+	it('Invalid Email Me - no message', function(done) {
+		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&name='+commentName);
+		testRequest.end( function(err, result) {
+				// response from our service
+				expect(result.res.statusCode).to.be(400);
+				done();
+			});
+	});
+});	

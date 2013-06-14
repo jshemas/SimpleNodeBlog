@@ -42,6 +42,15 @@ module.exports = function(app, Blog, User, mongoose, config) {
 	});
 
 	/*
+	 * GET JSON Response of Blog Posts
+	 */
+	 app.get('/blogJSON', function(req, res){
+		Blog.getBlogPost( function(blog) {
+			res.json(blog);
+		});
+	});
+
+	/*
 	 * GET Admin Page - Get Blog Post
 	 */
 	app.get('/admin/blog/:blodID?', function(req, res){
@@ -269,6 +278,9 @@ module.exports = function(app, Blog, User, mongoose, config) {
 		var email = req.param('email', ''),
 			emailmessage = req.param('message', ''),
 			name = req.param('name', '');
+		if(validateVar(email)) {res.send(400); return;};
+		if(validateVar(emailmessage)) {res.send(400); return;};
+		if(validateVar(name)) {res.send(400); return;};
 		//build email message
 		emailmessage = emailmessage + " - " + name + " @ " + email;
 		// send it!
@@ -277,9 +289,15 @@ module.exports = function(app, Blog, User, mongoose, config) {
 			from: email, 
 			to: config.emailAccount,
 			subject: "Simple Node Blog"
-		}, function(err, message) { 
-			//console.log(err || message); 
-			res.send(200);
+		}, function(err, results) { 
+			// Check for an error
+			if(err){ //log error?
+				//console.log('err',err);
+				res.send(400);
+			} else {
+				//console.log('results',results);
+				res.send(200);
+			};
 		});
 	});
 

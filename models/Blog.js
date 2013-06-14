@@ -30,7 +30,7 @@ module.exports = function(mongoose, winston) {
 		blogPost.save( function(err, results){
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
@@ -49,7 +49,7 @@ module.exports = function(mongoose, winston) {
 			blog.save( function(err, results){
 				if(err){ //log error?
 					callback();
-				} else{
+				} else {
 					callback(results);
 				};
 			});
@@ -61,9 +61,12 @@ module.exports = function(mongoose, winston) {
 		var query = Blog.find().sort('-createdDate');
 		query.select('title subTitle tags body _id createdDate');
 		//execute the query at a later time
-		query.exec(function (err, blog) {
-		if (err) return handleError(err);
-			callback(blog);
+		query.exec(function (err, results) {
+			if(err){ //log error?
+				callback();
+			} else {
+				callback(results);
+			};
 		})
 	};
 
@@ -76,7 +79,7 @@ module.exports = function(mongoose, winston) {
 			// Check for an error   
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
@@ -95,7 +98,7 @@ module.exports = function(mongoose, winston) {
 			// Check for an error   
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
@@ -107,7 +110,7 @@ module.exports = function(mongoose, winston) {
 			// Check for an error
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
@@ -124,7 +127,7 @@ module.exports = function(mongoose, winston) {
 			// Check for an error
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
@@ -139,7 +142,7 @@ module.exports = function(mongoose, winston) {
 			// Check for an error
 			if(err){ //log error?
 				callback();
-			} else{
+			} else {
 				callback(results);
 			};
 		});
