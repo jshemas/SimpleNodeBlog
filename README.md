@@ -1,22 +1,25 @@
 Simple Node Blog
 =======
 
-This is my attempt at building a blog using Node.js
-(still a work in progress)
+This is my attempt at building a blog using Node.js and MongoDB.
 
 ### Installation
+This was build using Node.js(v0.10.10) and MongoDB(v2.4.4).
 
-You need to have Node.js(v0.8.16) and MongoDB(v2.2.2) running.
-
+First install the node_modules by running:
 ```
 npm install
-// for first time running use
+```
+You'll also have to set a config.js for the email page, I have included an example.
+
+For running the application for the first time:
+```
 node app -s
-// otherwise use
+```
+This will make a default admin account and blog post. Other wise, you can just run...
+```
 node app
 ```
-
-You'll also have to set a config.js, I have included an example.
 
 ### Tests
 You have to have jasmine-node running. To install it run...
