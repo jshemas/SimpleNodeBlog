@@ -1,6 +1,6 @@
 var express = require('express'),
-	engine = require('ejs-locals'),
 	app = express(),
+	expressLayouts = require('express-ejs-layouts'),
 	MemoryStore = require('connect').session.MemoryStore,
 	dbPath = 'mongodb://localhost/something',
 	mongoose = require('mongoose'),
@@ -19,14 +19,12 @@ var User = require('./models/User')(mongoose, winston);
 // load config (if you see an error here, its because you don't have a config file)
 var config = require('./config')(email);
 
-// use ejs-locals for all ejs templates:
-app.engine('ejs', engine);
-
 // configure Express
 app.configure(function() {
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
-	app.engine('ejs', engine);
+	app.set('layout', 'layout')
+	app.use(expressLayouts);
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
