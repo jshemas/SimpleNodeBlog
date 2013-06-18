@@ -10,14 +10,18 @@
 				<ul class="media-list">
 					<li class="media">
 						<div class="media-body">
-							<h1 class="media-heading"><%= blog.title %></h1>
-							<h5><%= blog.subTitle %> | <%= weekDay[blog.createdDate.getDay()] %>, <%= monthNames[blog.createdDate.getMonth()] %> <%= blog.createdDate.getDate() %>, <%= blog.createdDate.getFullYear() %></h5>
-							<%= blog.body %>
-							<h6 style="text-align: right;">
-								Tags: <%= blog.tags %>
-							</h6>
+							<div class="well blogPost">
+								<h1 class="media-heading"><%= blog.title %></h1>
+								<h5><%= blog.subTitle %> | <%= weekDay[blog.createdDate.getDay()] %>, <%= monthNames[blog.createdDate.getMonth()] %> <%= blog.createdDate.getDate() %>, <%= blog.createdDate.getFullYear() %></h5>
+								<%= blog.body %>
+								<h6 style="text-align: right;">
+									Tags: <%= blog.tags %>
+								</h6>
+							</div>
+							<% oddNumFlag = 0; commentPlacement = "commentLeft"; %>
 							<% for(var i = 0; i < blog.comment.length; i++) { %>
-								<div class="media">
+								<% if(oddNumFlag == 0){oddNumFlag=1;commentPlacement="commentRight";}else{oddNumFlag=0;commentPlacement="commentLeft";} %>
+								<div class="media well blogComment <%- commentPlacement %>">
 									<% var blogComment = blog.comment[i]; %>
 									<p><%= blogComment.body %></p>
 									<p style="text-align: right;">-<%= blogComment.author %></p>
@@ -26,7 +30,7 @@
 						</div>
 					</li>
 				</ul>
-				<div class="span4">
+				<div class="span4 offset4">
 					<div class="well well-large">
 						<form class="form-horizontal" id="postCommentForm">
 							<div class="displayNone">
@@ -76,6 +80,8 @@
 						if (data.commentID) {
 							//comment was made, go to homepage
 							window.location = window.location;
+						} else {
+							document.getElementById("error").innerHTML="Something went wrong!";
 						};
 					}
 				});

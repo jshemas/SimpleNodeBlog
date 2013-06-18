@@ -45,16 +45,21 @@ module.exports = function(mongoose, winston) {
 				author: displayName,
 				body: comment
 			};
-			//add comment
-			blog.comment.push(comment);
-			blog.save( function(err, results){
-				if(err){
-					winston.info('Error in commentPost:'+err);
-					callback();
-				} else {
-					callback(results);
-				};
-			});
+			//test if we got a blog object back
+			if(blog._id){
+				//add comment
+				blog.comment.push(comment);
+				blog.save( function(err, results){
+					if(err){
+						winston.info('Error in commentPost:'+err);
+						callback();
+					} else {
+						callback(results);
+					};
+				});
+			} else {
+				callback();
+			};
 		});
 	};
 

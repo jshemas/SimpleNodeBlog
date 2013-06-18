@@ -570,38 +570,39 @@ describe('POST - Delete Blog Post Comment:', function (done) {
 	});
 });
 
-describe('POST - Email Me:', function (done) {
-	//this test might fail if you don't have a real emmail in the config.js
-	it('Valid Email Me', function(done) {
-		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody+'&name='+commentName);
-		testRequest.end( function(err, result) {
-				// response from our service
-				expect(result.res.statusCode).to.be(200);
-				done();
-			});
-	});
-	it('Invalid Email Me - no name', function(done) {
-		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody);
-		testRequest.end( function(err, result) {
-				// response from our service
-				expect(result.res.statusCode).to.be(400);
-				done();
-			});
-	});
-	it('Invalid Email Me - no email', function(done) {
-		var testRequest = request(baseURL).post('emailme?message='+commentBody+'&name='+commentName);
-		testRequest.end( function(err, result) {
-				// response from our service
-				expect(result.res.statusCode).to.be(400);
-				done();
-			});
-	});
-	it('Invalid Email Me - no message', function(done) {
-		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&name='+commentName);
-		testRequest.end( function(err, result) {
-				// response from our service
-				expect(result.res.statusCode).to.be(400);
-				done();
-			});
-	});
-});	
+// Leaving these comment out so I stop sending myself emails
+// describe('POST - Email Me:', function (done) {
+// 	//this test might fail if you don't have a real emmail in the config.js
+// 	it('Valid Email Me', function(done) {
+// 		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody+'&name='+commentName);
+// 		testRequest.end( function(err, result) {
+// 				// response from our service
+// 				expect(result.res.statusCode).to.be(200);
+// 				done();
+// 			});
+// 	});
+// 	it('Invalid Email Me - no name', function(done) {
+// 		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&message='+commentBody);
+// 		testRequest.end( function(err, result) {
+// 				// response from our service
+// 				expect(result.res.statusCode).to.be(400);
+// 				done();
+// 			});
+// 	});
+// 	it('Invalid Email Me - no email', function(done) {
+// 		var testRequest = request(baseURL).post('emailme?message='+commentBody+'&name='+commentName);
+// 		testRequest.end( function(err, result) {
+// 				// response from our service
+// 				expect(result.res.statusCode).to.be(400);
+// 				done();
+// 			});
+// 	});
+// 	it('Invalid Email Me - no message', function(done) {
+// 		var testRequest = request(baseURL).post('emailme?email='+commentEmail+'&name='+commentName);
+// 		testRequest.end( function(err, result) {
+// 				// response from our service
+// 				expect(result.res.statusCode).to.be(400);
+// 				done();
+// 			});
+// 	});
+// });	
