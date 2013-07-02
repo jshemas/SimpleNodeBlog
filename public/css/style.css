@@ -57,3 +57,16 @@
 input, textarea {
 	max-width: 100%;
 } 
+
+/* About Me Page */
+.sourceCode {
+	float: right;
+}
+.sourceCode a{
+	color: #555;
+	font-size: 15px;
+	text-decoration: underline;
+}
+.sourceCode a:hover{
+	font-size: 22px;
+}
