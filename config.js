@@ -9,8 +9,14 @@ module.exports = function(email) {
 	// the email account you'll be sending it too
 	var emailAccount = "youremail@gmail.com"
 
+	//first run admin account info
+	var userName = "Admin";
+	var password = "12345";
+
 	return {
 		emailServer: emailServer,
-		emailAccount: emailAccount
+		emailAccount: emailAccount,
+		userName: userName,
+		password: password
 	};
 };

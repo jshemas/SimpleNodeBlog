@@ -12,12 +12,12 @@ var express = require('express'),
 winston.add(winston.transports.File, { filename: 'infoLog.log' });
 winston.remove(winston.transports.Console);
 
+// load config (be sure to update this with your settings)
+var config = require('./config')(email);
+
 // import models
 var Blog = require('./models/Blog')(mongoose, winston);
-var User = require('./models/User')(mongoose, winston);
-
-// load config (if you see an error here, its because you don't have a config file)
-var config = require('./config')(email);
+var User = require('./models/User')(mongoose, winston, config);
 
 // configure Express
 app.configure(function() {

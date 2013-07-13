@@ -1,4 +1,4 @@
-module.exports = function(mongoose, winston) {
+module.exports = function(mongoose, winston, config) {
 	// Account Schema
 	var AccountSchema = new mongoose.Schema({
 		password:  { type: String },
@@ -68,9 +68,9 @@ module.exports = function(mongoose, winston) {
 	// running the blog for the first time
 	var firstRunBlogUser = function() {
 		var testAccount = new Account({
-			password: 'password',
-			displayName: 'displayName',
-			email: 'email',
+			password: config.password,
+			displayName: config.userName,
+			email: config.userName,
 			isAdmin: true
 		});
 		// make that user!
