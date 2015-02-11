@@ -6,8 +6,8 @@ console.log("Starting Tests");
 var baseURL = "http://localhost:8080/";
 
 //admin login info
-var adminName = 'email',
-	adminPassword = 'password';
+var adminName = 'Admin',
+	adminPassword = '12345';
 
 //store the admin login cookie
 var cookie;
