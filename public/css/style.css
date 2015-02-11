@@ -53,10 +53,10 @@
 	float: left;
 }
 
-/* bug - input/textarea extend outside of well */ 
+/* bug - input/textarea extend outside of well */
 input, textarea {
 	max-width: 100%;
-} 
+}
 
 /* About Me Page */
 .sourceCode {

@@ -24,7 +24,7 @@
 					<div class="span4 well">
 						<h2><%= blogPost.title %></h2>
 						<p><%=: blogPost.body | truncate:250 %>...</p>
-						<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a> 
+						<a class="btn" href="/blog/<%= blogPost.id %>"><span class="btn-label">View Post</span></a>
 					</div>
 					<% if (count == 2) { %> </div> <div class="blogSpacer"></div><% } %>
 					<% count += 1 %>

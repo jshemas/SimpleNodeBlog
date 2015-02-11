@@ -21,7 +21,7 @@ module.exports = function(mongoose, winston, config) {
 			};
 		});
 	};
-	
+
 	//login page - used by admin
 	var login = function(email, password, callback) {
 		winston.info('Login on account:'+email);

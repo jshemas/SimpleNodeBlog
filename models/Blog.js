@@ -39,7 +39,7 @@ module.exports = function(mongoose, winston) {
 
 	// this posts the comment
 	var commentPost = function(displayName, comment, blogPostID, callback) {
-		//find blog 
+		//find blog
 		getSingleBlogPost(blogPostID, function(blog) {
 			comment = {
 				author: displayName,
@@ -94,14 +94,14 @@ module.exports = function(mongoose, winston) {
 
 	// edit that blog post!
 	var blogEditPost = function(title, subTitle, tags, body, user, blogID, callback){
-		var blogUpdate = { $set: { 
+		var blogUpdate = { $set: {
 			title: title,
 			subTitle: subTitle,
 			tags: tags,
 			body: body,
 			author: user
 		}};
-		Blog.update({_id:blogID},blogUpdate,{upsert: true}, function(err, results){ 
+		Blog.update({_id:blogID},blogUpdate,{upsert: true}, function(err, results){
 			if(err){
 				winston.info('Error in blogEditPost:'+err);
 				callback();
@@ -126,11 +126,11 @@ module.exports = function(mongoose, winston) {
 	// edit that blog comment!
 	var blogEditComment = function(author, body, user, theCommentID, blogID, callback){
 		// maybe we should log when this is edited
-		var commentUpdate = { $set: { 
+		var commentUpdate = { $set: {
 			'comment.$.body': body,
 			'comment.$.author': author
 		}};
-		Blog.update({_id:blogID, 'comment._id':theCommentID},commentUpdate,{upsert: true}, function(err, results){ 
+		Blog.update({_id:blogID, 'comment._id':theCommentID},commentUpdate,{upsert: true}, function(err, results){
 			if(err){
 				winston.info('Error in blogEditComment:'+err);
 				callback();
@@ -142,10 +142,10 @@ module.exports = function(mongoose, winston) {
 
 	// delete that blog comment!
 	var blogDeleteComment = function(theCommentID, blogID, callback){
-		var commentUpdate = { $pull: { 
+		var commentUpdate = { $pull: {
 			comment:{_id:theCommentID}
 		}};
-		Blog.update({_id:blogID},commentUpdate, function(err, results){ 
+		Blog.update({_id:blogID},commentUpdate, function(err, results){
 			if(err){
 				winston.info('Error in blogDeleteComment:'+err);
 				callback();

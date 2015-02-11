@@ -132,7 +132,7 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 			};
 		});
 	});
-	
+
 	/*
 	 * POST Admin Page - Delete Blog Comment
 	 */
@@ -217,7 +217,7 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	/*
 	 * POST A Blog - From Admin Page
 	 */
-	app.post('/postBlogNow', function(req, res){ 
+	app.post('/postBlogNow', function(req, res){
 		var title = req.param('title', ''),
 			subTitle = req.param('subTitle', ''),
 			tags = req.param('tags', ''),
@@ -285,11 +285,11 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 		emailmessage = emailmessage + " - " + name + " @ " + email;
 		// send it!
 		config.emailServer.send({
-			text: emailmessage, 
-			from: email, 
+			text: emailmessage,
+			from: email,
 			to: config.emailAccount,
 			subject: "Simple Node Blog"
-		}, function(err, results) { 
+		}, function(err, results) {
 			if(err){
 				winston.info('Error in emailme:'+err);
 				res.send(400);

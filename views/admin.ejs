@@ -27,7 +27,7 @@
 						<div>
 							<textarea name="body" id="body" placeholder="Body" rows="3"></textarea>
 						</div>
-					</div> 
+					</div>
 					<div class="control-group">
 						<div>
 							<button id="submitPostButtonId" type="submit" class="btn">Post Now</button>
@@ -69,7 +69,7 @@
 						<div>
 							<textarea name="editBody" id="editBody" placeholder="editBody" rows="3"></textarea>
 						</div>
-					</div> 
+					</div>
 					<div class="control-group">
 						<div>
 							<input type="hidden" name="theBlogID" id="theBlogID" placeholder="theBlogID">
@@ -186,7 +186,7 @@ $(document).ready(function() {
 	//user is editing some comment
 	$(".submitEditCommentButtonClass").live('click',function() {
 		commentData = $(this).closest('form');
-		//need to see if data is there		
+		//need to see if data is there
 		$.ajax({
 			type: 'POST',
 			url: '/admin/editBlogCommentNow',

@@ -28,9 +28,9 @@ app.configure(function() {
 	app.use(express.cookieParser());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.session({ 
-		secret: 'choo choo', 
-		store: new MemoryStore() 
+	app.use(express.session({
+		secret: 'choo choo',
+		store: new MemoryStore()
 	}));
 	mongoose.connect(dbPath, function onMongooseError(err) {
 		if (err) throw err;
