@@ -69,23 +69,23 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST Admin Page - Edit Blog Post
 	 */
 	app.post('/admin/editBlogNow', function(req, res){
-		var title = req.param('editTitle', ''),
-			subTitle = req.param('editSubTitle', ''),
-			tags = req.param('editTags', ''),
-			body = req.param('editBody', ''),
-			blogID = req.param('theBlogID', '');
+		var title = req.query.editTitle,
+			subTitle = req.query.editSubTitle,
+			tags = req.query.editTags,
+			body = req.query.editBody,
+			blogID = req.query.theBlogID;
 		//must have title and body
-		if(validateVar(title)) {res.send(400); return;};
-		if(validateVar(body)) {res.send(400); return;};
+		if(validateVar(title)) {res.sendStatus(400); return;};
+		if(validateVar(body)) {res.sendStatus(400); return;};
 		//must have a ID
-		if(validateVar(blogID)) {res.send(400); return;};
+		if(validateVar(blogID)) {res.sendStatus(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) {res.send(400); return;};
+		if (req.session.loggedIn != true) {res.sendStatus(400); return;};
 		Blog.blogEditPost(title, subTitle, tags, body, req.session.displayName, blogID, function(results) {
 			if(results == 1){
-				res.send(200);
+				res.sendStatus(200);
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			};
 		});
 	});
@@ -94,16 +94,16 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST Admin Page - Delete Blog Post
 	 */
 	app.post('/admin/deleteBlogNow', function(req, res){
-		var blogID = req.param('theBlogID', '');
+		var blogID = req.query.theBlogID;
 		//must have a ID
-		if(validateVar(blogID)) {res.send(400); return;};
+		if(validateVar(blogID)) {res.sendStatus(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) {res.send(400); return;};
+		if (req.session.loggedIn != true) {res.sendStatus(400); return;};
 		Blog.blogDeletePost(blogID, function(results) {
 			if(results == 1){
-				res.send(200);
+				res.sendStatus(200);
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			};
 		});
 	});
@@ -112,23 +112,23 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST Admin Page - Edit Blog Comment
 	 */
 	app.post('/admin/editBlogCommentNow', function(req, res){
-		var author = req.param('editAuthor', ''),
-			body = req.param('editBody', ''),
-			blogID = req.param('theBlogID', '');
-			commentID = req.param('theCommentID', '');
+		var author = req.query.editAuthor,
+			body = req.query.editBody,
+			blogID = req.query.theBlogID,
+			commentID = req.query.theCommentID;
 		//must have author and body
-		if(validateVar(author)) {res.send(400); return;};
-		if(validateVar(body)) {res.send(400); return;};
+		if(validateVar(author)) {res.sendStatus(400); return;};
+		if(validateVar(body)) {res.sendStatus(400); return;};
 		//must have a ID
-		if(validateVar(blogID)) {res.send(400); return;};
-		if(validateVar(commentID)) {res.send(400); return;};
+		if(validateVar(blogID)) {res.sendStatus(400); return;};
+		if(validateVar(commentID)) {res.sendStatus(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) {res.send(400); return;};
+		if (req.session.loggedIn != true) {res.sendStatus(400); return;};
 		Blog.blogEditComment(author, body, req.session.displayName, commentID, blogID, function(results) {
 			if(results == 1){
-				res.send(200);
+				res.sendStatus(200);
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			};
 		});
 	});
@@ -137,18 +137,18 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST Admin Page - Delete Blog Comment
 	 */
 	app.post('/admin/deleteCommentNow', function(req, res){
-		var blogID = req.param('theBlogID', '');
-			commentID = req.param('theCommentID', '');
+		var blogID = req.query.theBlogID,
+			commentID = req.query.theCommentID;
 		//must have a ID
-		if(validateVar(blogID)) {res.send(400); return;};
-		if(validateVar(commentID)) {res.send(400); return;};
+		if(validateVar(blogID)) {res.sendStatus(400); return;};
+		if(validateVar(commentID)) {res.sendStatus(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) {res.send(400); return;};
+		if (req.session.loggedIn != true) {res.sendStatus(400); return;};
 		Blog.blogDeleteComment(commentID, blogID, function(results) {
 			if(results == 1){
-				res.send(200);
+				res.sendStatus(200);
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			};
 		});
 	});
@@ -164,22 +164,22 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST Login Page
 	 */
 	app.post('/userlogin', function(req, res){
-		var email = req.param('email', ''),
-			password = req.param('password', '');
+		var email = req.query.email,
+			password = req.query.password;
 		//is email and password set?
-		if(validateVar(email)) {res.send(400); return;};
-		if(validateVar(password)) {res.send(400); return;};
+		if(validateVar(email)) {res.sendStatus(400); return;};
+		if(validateVar(password)) {res.sendStatus(400); return;};
 		// try to login
 		User.login(email, password, function(account) {
 			if (!account) {
 				//account not found
-				res.send(401);
+				res.sendStatus(401);
 				return;
 			}
 			//set session
 			req.session.loggedIn = true;
 			req.session.displayName = account.displayName;
-			res.send(200);
+			res.sendStatus(200);
 		});
 	});
 
@@ -218,22 +218,22 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST A Blog - From Admin Page
 	 */
 	app.post('/postBlogNow', function(req, res){
-		var title = req.param('title', ''),
-			subTitle = req.param('subTitle', ''),
-			tags = req.param('tags', ''),
-			body = req.param('body', '');
+		var title = req.query.title,
+			subTitle = req.query.subTitle,
+			tags = req.query.tags,
+			body = req.query.body;
 		//must have title and body
 
-		if(validateVar(title)) {res.send(400); return;};
-		if(validateVar(body)) {res.send(400); return;};
+		if(validateVar(title)) {res.sendStatus(400); return;};
+		if(validateVar(body)) {res.sendStatus(400); return;};
 		//must be logged in
-		if (req.session.loggedIn != true) {res.send(400); return;};
+		if (req.session.loggedIn != true) {res.sendStatus(400); return;};
 		Blog.blogPost(title, subTitle, tags, body, req.session.displayName, function(blog) {
 			//return blogID
 			if(blog && blog.id){
 				res.json({ 'blogID': blog.id });
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			};
 		});
 	});
@@ -242,14 +242,14 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 * POST A Comment - From Single Blog Page
 	 */
 	app.post('/postCommentNow', function(req, res){
-		var email = req.param('email', ''),
-			comment = req.param('comment', ''),
-			name = req.param('name', ''),
-			blogPostID = req.param('blogPostID', '');
-		if(validateVar(email)) {res.send(400); return;};
-		if(validateVar(comment)) {res.send(400); return;};
-		if(validateVar(name)) {res.send(400); return;};
-		if(validateVar(blogPostID)) {res.send(400); return;};
+		var email = req.query.email,
+			comment = req.query.comment,
+			name = req.query.name,
+			blogPostID = req.query.blogPostID;
+		if(validateVar(email)) {res.sendStatus(400); return;};
+		if(validateVar(comment)) {res.sendStatus(400); return;};
+		if(validateVar(name)) {res.sendStatus(400); return;};
+		if(validateVar(blogPostID)) {res.sendStatus(400); return;};
 		User.register(email,name, function(account) {
 			//found the account
 			if(account){
@@ -261,11 +261,11 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 						var commentObj = results.comment;
 						res.json({ 'commentID': commentObj[0].id });
 					} else {
-						res.send(400);
+						res.sendStatus(400);
 					};
 				});
 			} else {
-				res.send(400);
+				res.sendStatus(400);
 			}
 		});
 	});
@@ -275,12 +275,12 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 	 */
 	app.post('/emailme', function(req, res){
 		//set vars
-		var email = req.param('email', ''),
-			emailmessage = req.param('message', ''),
-			name = req.param('name', '');
-		if(validateVar(email)) {res.send(400); return;};
-		if(validateVar(emailmessage)) {res.send(400); return;};
-		if(validateVar(name)) {res.send(400); return;};
+		var email = req.query.email,
+			emailmessage = req.query.message,
+			name = req.query.name;
+		if(validateVar(email)) {res.sendStatus(400); return;};
+		if(validateVar(emailmessage)) {res.sendStatus(400); return;};
+		if(validateVar(name)) {res.sendStatus(400); return;};
 		//build email message
 		emailmessage = emailmessage + " - " + name + " @ " + email;
 		// send it!
@@ -292,9 +292,9 @@ module.exports = function(app, Blog, User, mongoose, config, winston) {
 		}, function(err, results) {
 			if(err){
 				winston.info('Error in emailme:'+err);
-				res.send(400);
+				res.sendStatus(400);
 			} else {
-				res.send(200);
+				res.sendStatus(200);
 			};
 		});
 	});

@@ -95,12 +95,12 @@
 
 <!-- SEO ADD ONS -->
 <%- contentFor('pageTitle') %>
-<%=: blog.title | truncate:69 %>
+<%= blog.title %>
 <%- contentFor('pageDescription') %>
-<%=: blog.body | truncate:154 %>
+<%= blog.body %>
 <%- contentFor('pageKeywords') %>
-<%=: blog.tags | truncate:154 %>
+<%= blog.tags %>
 <%- contentFor('ogTitle') %>
-<%=: blog.title | truncate:69 %>
+<%= blog.title %>
 <%- contentFor('ogDescription') %>
-<%=: blog.body | truncate:154 %>
+<%= blog.body %>

@@ -4,7 +4,7 @@ Simple Node Blog
 This is my attempt at building a blog using Node.js and MongoDB.
 
 ### Installation
-This was build using Node.js(v0.10.10) and MongoDB(v2.4.4).
+This was build using Node.js(v0.10.36) and MongoDB(v2.6.4).
 
 First install the node_modules by running:
 ```

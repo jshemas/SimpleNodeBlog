@@ -12,7 +12,7 @@
 							<div class="media-body">
 								<h1 class="media-heading"><%= blogPost.title %></h1>
 								<h5><%= blogPost.subTitle %> | <%= weekDay[blogPost.createdDate.getDay()] %>, <%= monthNames[blogPost.createdDate.getMonth()] %> <%= blogPost.createdDate.getDate() %>, <%= blogPost.createdDate.getFullYear() %></h5>
-								<p><%=: blogPost.body | truncate:250 %>...</p>
+								<p><%= blogPost.body %>...</p>
 								<h6 style="text-align: right;">
 									Tags: <%= blogPost.tags %>
 								</h6>
